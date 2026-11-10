@@ -25,6 +25,7 @@ describe('App', () => {
       about: [],
       skills: [],
       email: 'test@example.com',
+      phone: null,
       links: [],
     });
     http.expectOne('/api/projects').flush([]);

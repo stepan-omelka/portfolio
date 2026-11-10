@@ -36,6 +36,7 @@ export interface Profile {
   about: string[];
   skills: SkillGroup[];
   email: string;
+  phone: string | null;
   links: Link[];
 }
 

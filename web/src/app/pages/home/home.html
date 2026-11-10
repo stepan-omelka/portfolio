@@ -74,8 +74,13 @@
     <h2 id="contact-title">Contact</h2>
   </div>
   @if (profile(); as p) {
-    <p class="muted">The best way to reach me is by email.</p>
-    <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
+    <p class="muted">Write me an email or give me a call.</p>
+    <div class="reach">
+      <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
+      @if (phoneHref(); as href) {
+        <a class="phone" [href]="href">{{ p.phone }}</a>
+      }
+    </div>
     @if (p.links.length) {
       <ul class="links">
         @for (link of p.links; track link.url) {

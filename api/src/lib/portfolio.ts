@@ -48,6 +48,8 @@ export interface Profile {
   /** Shown as columns under the About text. */
   skills: SkillGroup[];
   email: string;
+  /** Shown under the email in the Contact section, e.g. "+420 123 456 789"; `null` hides it. */
+  phone: string | null;
   links: Link[];
 }
 
@@ -65,10 +67,11 @@ export const profile: Profile = {
     { label: "Frontend", items: ["Angular", "TypeScript", "RxJS & Signals", "HTML & SCSS"] },
     { label: "Backend", items: ["Spring Boot", "Java", "Next.js", "Node.js", "REST APIs"] },
   ],
-  email: "hello@example.com",
+  email: "stepomelka@gmail.com",
+  phone: "+420 601 326 874",
   links: [
-    { label: "GitHub", url: "https://github.com/" },
-    { label: "LinkedIn", url: "https://www.linkedin.com/" },
+    { label: "GitHub", url: "https://github.com/stepan-omelka" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/%C5%A1t%C4%9Bp%C3%A1n-omelka-238383370" },
   ],
 };
 

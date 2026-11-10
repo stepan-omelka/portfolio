@@ -1,5 +1,13 @@
 import { ViewportScroller } from '@angular/common';
-import { afterNextRender, Component, effect, inject, Injector, isDevMode } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  effect,
+  inject,
+  Injector,
+  isDevMode,
+} from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PortfolioContent } from '../../core/portfolio-content';
 import { ProjectCard } from '../../shared/project-card';
@@ -15,6 +23,11 @@ export class Home {
   protected readonly profile = this.content.profile;
   protected readonly projects = this.content.projects;
   protected readonly isDev = isDevMode();
+  /** `tel:` links take the number without spaces. */
+  protected readonly phoneHref = computed(() => {
+    const phone = this.profile()?.phone;
+    return phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null;
+  });
 
   constructor() {
     // On a fresh load of e.g. /#about the router scrolls before the content has arrived,
