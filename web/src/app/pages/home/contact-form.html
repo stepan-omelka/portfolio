@@ -1,0 +1,96 @@
+@let s = status();
+@if (s.kind === 'sent') {
+  <div #sent class="sent" role="status" tabindex="-1">
+    <h3>Thanks, your message is on its way.</h3>
+    <p class="muted">I'll reply to {{ s.replyTo }}.</p>
+    <button class="button" type="button" (click)="sendAnother()">Send another message</button>
+  </div>
+} @else {
+  <form [formRoot]="contactForm" class="contact-form" aria-labelledby="contact-form-title">
+    <h3 id="contact-form-title">Send a message</h3>
+
+    @if (s.kind === 'error') {
+      <p class="form-error" role="alert">
+        @if (s.error === 'invalid') {
+          Please check the fields and try again.
+        } @else {
+          Sorry, the message couldn't be sent. Please email me at
+          <a [href]="'mailto:' + fallbackEmail()">{{ fallbackEmail() }}</a> instead.
+        }
+      </p>
+    }
+
+    <!-- Honeypot: hidden from people, so only bots fill it in. -->
+    <div class="honeypot" aria-hidden="true">
+      <label for="contact-website">Website</label>
+      <input
+        id="contact-website"
+        type="text"
+        tabindex="-1"
+        autocomplete="off"
+        [formField]="contactForm.website"
+      />
+    </div>
+
+    @let name = contactForm.name();
+    @let nameError = name.touched() && name.invalid();
+    <div class="field">
+      <label for="contact-name">Name</label>
+      <input
+        id="contact-name"
+        type="text"
+        autocomplete="name"
+        [formField]="contactForm.name"
+        [attr.aria-invalid]="nameError"
+        [attr.aria-describedby]="nameError ? 'contact-name-error' : null"
+      />
+      @if (nameError) {
+        <p class="field-error" id="contact-name-error">{{ name.errors()[0]?.message }}</p>
+      }
+    </div>
+
+    @let mail = contactForm.email();
+    @let mailError = mail.touched() && mail.invalid();
+    <div class="field">
+      <label for="contact-email">Email</label>
+      <input
+        id="contact-email"
+        type="email"
+        autocomplete="email"
+        [formField]="contactForm.email"
+        [attr.aria-invalid]="mailError"
+        [attr.aria-describedby]="mailError ? 'contact-email-error' : null"
+      />
+      @if (mailError) {
+        <p class="field-error" id="contact-email-error">{{ mail.errors()[0]?.message }}</p>
+      }
+    </div>
+
+    @let message = contactForm.message();
+    @let messageError = message.touched() && message.invalid();
+    <div class="field">
+      <label for="contact-message">Message</label>
+      <textarea
+        id="contact-message"
+        rows="6"
+        [formField]="contactForm.message"
+        [attr.aria-invalid]="messageError"
+        [attr.aria-describedby]="messageError ? 'contact-message-error' : null"
+      ></textarea>
+      @if (messageError) {
+        <p class="field-error" id="contact-message-error">{{ message.errors()[0]?.message }}</p>
+      }
+    </div>
+
+    @let sending = contactForm().submitting();
+    <div class="actions">
+      <button class="button primary" type="submit" [disabled]="sending" [attr.aria-busy]="sending">
+        {{ sending ? 'Sending…' : 'Send message' }}
+      </button>
+      <p class="note muted">
+        Your name, email and message are only used to reply to you. They go straight to my inbox
+        (sent through Resend) and aren't stored on this site.
+      </p>
+    </div>
+  </form>
+}

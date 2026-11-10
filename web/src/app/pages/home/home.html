@@ -74,24 +74,29 @@
     <h2 id="contact-title">Contact</h2>
   </div>
   @if (profile(); as p) {
-    <p class="muted">Write me an email or give me a call.</p>
-    <div class="reach">
-      <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
-      @if (phoneHref(); as href) {
-        <a class="phone" [href]="href">{{ p.phone }}</a>
-      }
-    </div>
-    @if (p.links.length) {
-      <ul class="links">
-        @for (link of p.links; track link.url) {
-          <li>
-            <a [href]="link.url" target="_blank" rel="noopener noreferrer">
-              {{ link.label }} <span aria-hidden="true">↗</span>
-              <span class="visually-hidden">(opens in a new tab)</span>
-            </a>
-          </li>
+    <div class="contact-grid">
+      <div class="contact-details">
+        <p class="muted">Write me an email, give me a call, or send a message through the form.</p>
+        <div class="reach">
+          <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
+          @if (phoneHref(); as href) {
+            <a class="phone" [href]="href">{{ p.phone }}</a>
+          }
+        </div>
+        @if (p.links.length) {
+          <ul class="links">
+            @for (link of p.links; track link.url) {
+              <li>
+                <a [href]="link.url" target="_blank" rel="noopener noreferrer">
+                  {{ link.label }} <span aria-hidden="true">↗</span>
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              </li>
+            }
+          </ul>
         }
-      </ul>
-    }
+      </div>
+      <app-contact-form [fallbackEmail]="p.email" />
+    </div>
   }
 </section>

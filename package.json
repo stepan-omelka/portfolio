@@ -10,7 +10,7 @@
     "build": "npm --prefix api run build:site",
     "start": "npm --prefix api start",
     "lint": "npm --prefix api run lint",
-    "test": "npm --prefix web test -- --watch=false"
+    "test": "npm --prefix api test && npm --prefix web test -- --watch=false"
   },
   "devDependencies": {
     "concurrently": "^9.2.5"

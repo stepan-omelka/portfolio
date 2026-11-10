@@ -11,10 +11,11 @@ import {
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PortfolioContent } from '../../core/portfolio-content';
 import { ProjectCard } from '../../shared/project-card';
+import { ContactForm } from './contact-form';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, ProjectCard],
+  imports: [RouterLink, ProjectCard, ContactForm],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

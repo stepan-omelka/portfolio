@@ -34,7 +34,7 @@ Open http://localhost:4300.
 | `npm run dev:web` | Only the Angular app (port 4300)              |
 | `npm run build`   | Production build: Angular + Next.js as one app |
 | `npm start`       | Serve that build on http://localhost:3300     |
-| `npm test`        | Angular unit tests (Vitest)                   |
+| `npm test`        | API and Angular unit tests (Vitest)           |
 | `npm run lint`    | ESLint for the API                            |
 
 ## Adding a project
@@ -76,6 +76,27 @@ two in sync if you change the shape.
 | `GET /api/profile`         | `Profile`                   |
 | `GET /api/projects`        | `Project[]`                 |
 | `GET /api/projects/:slug`  | `Project`, or 404           |
+| `POST /api/contact`        | Emails a contact form message, see below |
+
+## Contact form
+
+The Contact section has a form (`web/src/app/pages/home/contact-form.ts`, Angular Signal Forms).
+It posts to `POST /api/contact` ([`api/src/app/api/contact/route.ts`](api/src/app/api/contact/route.ts)),
+which validates the message with zod, drops it silently if a hidden honeypot field was filled in (bots),
+and emails it through [Resend](https://resend.com) to the address in `profile.email`, with reply-to set
+to the visitor. Nothing is stored.
+
+It sends from Resend's shared address `onboarding@resend.dev`, so no domain is needed. That address
+only delivers to the email the Resend account was created with, so the account must use the same
+address as `profile.email`. Setup:
+
+1. Sign up at Resend with that address (free plan: 3,000 emails a month, 100 a day, no card).
+2. Create an API key with *Sending access*.
+3. Vercel → project → *Settings → Environment Variables*: add `RESEND_API_KEY` for Production
+   (mark it *Sensitive*), then redeploy.
+4. Locally, put `RESEND_API_KEY=...` into `api/.env.local` (git-ignored).
+
+Without the key the form shows an error that offers the email address instead.
 
 ## Theme
 

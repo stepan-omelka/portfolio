@@ -45,3 +45,14 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   'in-progress': 'In progress',
   placeholder: 'Coming soon',
 };
+
+/** Body of POST /api/contact. `website` is a honeypot that people leave empty. */
+export interface ContactRequest {
+  name: string;
+  email: string;
+  message: string;
+  website: string;
+}
+
+/** Error codes returned by POST /api/contact. */
+export type ContactError = 'invalid' | 'send-failed' | 'unexpected';
