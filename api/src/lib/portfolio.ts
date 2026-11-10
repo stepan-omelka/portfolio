@@ -175,6 +175,28 @@ const featuredProjects: Project[] = [
     links: [{ label: "Live site", url: "https://pocmarano.com" }],
     status: "live",
   },
+  {
+    slug: "agedate",
+    title: "Agedate",
+    summary:
+      "A dating-range calculator (half your age plus seven) that turns your result into an image for your story.",
+    description: [
+      "Enter your age and Agedate shows your socially acceptable dating range by the half-your-age-plus-seven rule, then turns it into a 1080×1920 image to post on an Instagram or Facebook story.",
+      "Frontend: Angular 22, zoneless and built on signals. The age field is validated with Signal Forms, and the result is a single computed signal. The story image is preloaded with httpResource as soon as a range is on screen, because browsers only open the share sheet straight from a click; where there is no share sheet, the image is downloaded instead.",
+      "Backend: a Next.js 16 route handler renders the image with next/og (Satori) and the Inter font, returns invalid ages as Problem Details (RFC 9457) and lets the CDN cache each age's image. The rule is one TypeScript module that both the Angular app and the API import, so the numbers on screen and in the image always agree.",
+      "Tested with Vitest on both sides, with lint, tests and the build checked in GitHub Actions. One Next.js app on Vercel serves the Angular build and the API from the same origin. The repo has an AGENTS.md and a README per project, written so a coding agent can pick the work up. It began as a frontend-only Angular app on Firebase and was rebuilt as a full stack app.",
+    ],
+    year: 2026,
+    role: "Full stack developer",
+    frontend: "Angular",
+    backend: "Next.js",
+    tags: ["Angular", "Next.js", "TypeScript", "Signal Forms", "Vercel"],
+    links: [
+      { label: "Try it", url: "https://agedate.vercel.app" },
+      { label: "Source code", url: "https://github.com/stepan-omelka/agedateinterval" },
+    ],
+    status: "live",
+  },
 ];
 
 /** Minimum number of cards on the page; empty ones are filled with placeholders. */
