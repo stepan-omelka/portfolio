@@ -1,18 +1,23 @@
 @if (content.hasError()) {
   <div class="alert" role="alert">
-    <p>Couldn't load content from the API. Is the Next.js server running?</p>
+    <p>
+      Sorry, the content couldn't be loaded.
+      @if (isDev) {
+        <span class="muted">(Dev: is the Next.js API running? Try <code>npm run dev</code>.)</span>
+      }
+    </p>
     <button type="button" class="button" (click)="content.reload()">Try again</button>
   </div>
 }
 
 <section class="hero" aria-labelledby="hero-title">
-  @if (profile(); as p) {
+  @let p = profile();
+  @if (p) {
     <p class="eyebrow">{{ p.role }} · {{ p.location }}</p>
-    <h1 id="hero-title">{{ p.name }}</h1>
+  }
+  <h1 id="hero-title">{{ p?.name ?? 'Portfolio' }}</h1>
+  @if (p) {
     <p class="lead">{{ p.intro }}</p>
-  } @else {
-    <p class="eyebrow">Portfolio</p>
-    <h1 id="hero-title">Hello.</h1>
   }
   <div class="actions">
     <a class="button primary" routerLink="/" fragment="work">View work</a>

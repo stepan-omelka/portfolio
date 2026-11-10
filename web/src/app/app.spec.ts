@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
+import { PortfolioContent } from './core/portfolio-content';
 
 describe('App', () => {
   beforeEach(() => {
@@ -43,6 +44,7 @@ describe('App', () => {
     await fixture.whenStable();
 
     const el = fixture.nativeElement as HTMLElement;
+    expect(TestBed.inject(PortfolioContent).hasError()).toBe(true);
     expect(el.querySelector('.brand')?.textContent?.trim()).toBe('Portfolio');
   });
 });

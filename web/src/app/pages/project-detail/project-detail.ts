@@ -1,5 +1,5 @@
 import { httpResource, HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input, isDevMode } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { API_BASE_URL } from '../../core/api-base-url';
@@ -17,6 +17,7 @@ export class ProjectDetail {
 
   private readonly apiBase = inject(API_BASE_URL);
   private readonly title = inject(Title);
+  protected readonly isDev = isDevMode();
 
   protected readonly resource = httpResource<Project>(
     () => `${this.apiBase}/projects/${encodeURIComponent(this.slug())}`,

@@ -1,8 +1,8 @@
 /**
  * Portfolio content — the single source of truth served by the API.
  *
- * To add a real project, replace one of the placeholder entries below
- * (or append a new one) and set `status` to "live" or "in-progress".
+ * To add a project, put it in `featuredProjects` below. Every real project
+ * takes over one "Coming soon" placeholder slot until all slots are filled.
  * Keep the shape in sync with `web/src/app/core/models.ts`.
  */
 
@@ -57,6 +57,24 @@ export const profile: Profile = {
   ],
 };
 
+/**
+ * Your real projects, in the order they should appear. Example:
+ *
+ *   {
+ *     slug: "my-project",
+ *     title: "My Project",
+ *     summary: "One sentence for the card.",
+ *     description: ["Paragraph one.", "Paragraph two."],
+ *     year: 2026,
+ *     role: "Frontend developer",
+ *     tags: ["Angular", "TypeScript"],
+ *     links: [{ label: "Live site", url: "https://example.com" }],
+ *     status: "live",
+ *   },
+ */
+const featuredProjects: Project[] = [];
+
+/** Minimum number of cards on the page; empty ones are filled with placeholders. */
 const SLOT_COUNT = 6;
 const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six"];
 
@@ -78,9 +96,12 @@ function placeholderProject(index: number): Project {
   };
 }
 
-export const projects: Project[] = Array.from({ length: SLOT_COUNT }, (_, i) =>
-  placeholderProject(i),
-);
+const emptySlots = Math.max(0, SLOT_COUNT - featuredProjects.length);
+
+export const projects: Project[] = [
+  ...featuredProjects,
+  ...Array.from({ length: emptySlots }, (_, i) => placeholderProject(featuredProjects.length + i)),
+];
 
 export function findProject(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);

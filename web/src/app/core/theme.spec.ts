@@ -28,10 +28,11 @@ describe('ThemeService', () => {
     expect(document.documentElement.dataset['theme']).toBe('dark');
   });
 
-  it('ignores invalid stored values', () => {
+  it('ignores invalid stored values and falls back to the OS theme', () => {
+    // jsdom has no matchMedia, so the OS theme resolves to light.
     localStorage.setItem(THEME_STORAGE_KEY, 'purple');
     const service = TestBed.inject(ThemeService);
 
-    expect(['light', 'dark']).toContain(service.theme());
+    expect(service.theme()).toBe('light');
   });
 });

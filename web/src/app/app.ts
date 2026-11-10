@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, skip } from 'rxjs';
 import { SiteFooter } from './layout/site-footer';
 import { SiteHeader } from './layout/site-header';
 
@@ -9,4 +11,29 @@ import { SiteHeader } from './layout/site-header';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {}
+export class App {
+  private readonly main = viewChild.required<ElementRef<HTMLElement>>('main');
+
+  constructor() {
+    const router = inject(Router);
+
+    // After in-app navigation, move focus to the new content so keyboard and screen-reader
+    // users start there. Section links (/#work, ...) are left to the router's anchor scrolling.
+    router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        skip(1), // initial page load
+        takeUntilDestroyed(),
+      )
+      .subscribe((event) => {
+        if (!router.parseUrl(event.urlAfterRedirects).fragment) {
+          this.main().nativeElement.focus({ preventScroll: true });
+        }
+      });
+  }
+
+  protected skipToMain(event: Event): void {
+    event.preventDefault();
+    this.main().nativeElement.focus();
+  }
+}

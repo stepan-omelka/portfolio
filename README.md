@@ -12,6 +12,8 @@ so the browser only ever talks to `localhost:4300`.
 
 ## Getting started
 
+Requires Node.js `^22.22.3`, `^24.15.0` or `>=26` (Angular 22's supported range).
+
 ```bash
 npm install   # installs root, api/ and web/ dependencies
 npm run dev   # starts both servers
@@ -35,21 +37,24 @@ Open http://localhost:4300.
 All content lives in [`api/src/lib/portfolio.ts`](api/src/lib/portfolio.ts).
 
 The site ships with six placeholder slots (`status: "placeholder"`), rendered as dashed
-"Coming soon" cards. To fill a slot, replace one of the generated placeholders with a real
-entry:
+"Coming soon" cards. Add your projects to the `featuredProjects` array in that file: each one
+takes over a placeholder slot, and once all six are filled no more placeholders are shown
+(change `SLOT_COUNT` to show more or fewer slots).
 
 ```ts
-{
-  slug: "my-project",            // used in the URL: /projects/my-project
-  title: "My Project",
-  summary: "One sentence for the card.",
-  description: ["Paragraph one.", "Paragraph two."],
-  year: 2026,
-  role: "Frontend developer",
-  tags: ["Angular", "TypeScript"],
-  links: [{ label: "Live site", url: "https://example.com" }],
-  status: "live",                // "live" | "in-progress" | "placeholder"
-}
+const featuredProjects: Project[] = [
+  {
+    slug: "my-project",            // used in the URL: /projects/my-project
+    title: "My Project",
+    summary: "One sentence for the card.",
+    description: ["Paragraph one.", "Paragraph two."],
+    year: 2026,
+    role: "Frontend developer",
+    tags: ["Angular", "TypeScript"],
+    links: [{ label: "Live site", url: "https://example.com" }],
+    status: "live",                // "live" | "in-progress" | "placeholder"
+  },
+];
 ```
 
 Profile text (name, intro, about, email, social links) is in the same file. The frontend
@@ -73,7 +78,11 @@ visitor uses the toggle; that choice is saved in `localStorage`. A small inline 
 
 ## Deploying
 
-The frontend calls the API at `/api` (the `API_BASE_URL` token in
-`web/src/app/core/api-base-url.ts`). Either serve both behind one domain with `/api` routed to
-Next.js, or provide a full URL for `API_BASE_URL` in `web/src/app/app.config.ts` and enable
-CORS on the API.
+`npm run build` produces `web/dist/web/browser` (static files) and a Next.js build in `api/`.
+
+- **Routing:** the frontend is a single-page app, so the static host must serve `index.html`
+  for unknown paths (e.g. `/projects/my-project`), otherwise deep links and refreshes 404.
+- **API location:** the frontend calls the API at `/api` (the `API_BASE_URL` token in
+  `web/src/app/core/api-base-url.ts`). Either serve both behind one domain with `/api` routed
+  to Next.js, or provide a full URL for `API_BASE_URL` in `web/src/app/app.config.ts` and
+  enable CORS on the API.

@@ -7,6 +7,7 @@ import { ThemeToggle } from './theme-toggle';
 @Component({
   selector: 'app-site-header',
   imports: [RouterLink, ThemeToggle],
+  host: { role: 'banner' },
   template: `
     <div class="container bar">
       <a class="brand" routerLink="/">{{ name() }}</a>

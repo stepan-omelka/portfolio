@@ -3,6 +3,7 @@ import { PortfolioContent } from '../core/portfolio-content';
 
 @Component({
   selector: 'app-site-footer',
+  host: { role: 'contentinfo' },
   template: `
     <div class="container bar">
       <p>© {{ year }} {{ name() }}</p>

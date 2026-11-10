@@ -1,6 +1,7 @@
-<a class="skip-link" href="#main">Skip to content</a>
+<!-- Handled in code: a plain "#main" href resolves against <base href="/"> and would reload the home page. -->
+<a class="skip-link" href="#main" (click)="skipToMain($event)">Skip to content</a>
 <app-site-header />
-<main id="main" class="container" tabindex="-1">
+<main #main id="main" class="container" tabindex="-1">
   <router-outlet />
 </main>
 <app-site-footer />

@@ -58,7 +58,12 @@
 } @else if (resource.error()) {
   <div class="state" role="alert">
     <h1>Couldn't load this project</h1>
-    <p class="muted">The API didn't respond. Is the Next.js server running?</p>
+    <p class="muted">
+      Something went wrong while loading it.
+      @if (isDev) {
+        (Dev: is the Next.js API running? Try <code>npm run dev</code>.)
+      }
+    </p>
     <button type="button" class="button" (click)="resource.reload()">Try again</button>
   </div>
 } @else {
