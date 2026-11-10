@@ -23,6 +23,7 @@ describe('App', () => {
       location: 'Brno',
       intro: '',
       about: [],
+      skills: [],
       email: 'test@example.com',
       links: [],
     });

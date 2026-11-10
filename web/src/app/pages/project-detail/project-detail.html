@@ -17,6 +17,18 @@
         <dt>Role</dt>
         <dd>{{ p.role }}</dd>
       </div>
+      @if (p.frontend) {
+        <div>
+          <dt>Frontend</dt>
+          <dd>{{ p.frontend }}</dd>
+        </div>
+      }
+      @if (p.backend) {
+        <div>
+          <dt>Backend</dt>
+          <dd>{{ p.backend }}</dd>
+        </div>
+      }
       <div>
         <dt>Status</dt>
         <dd>{{ statusLabel() }}</dd>

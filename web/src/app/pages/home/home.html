@@ -52,6 +52,20 @@
         <p>{{ paragraph }}</p>
       }
     </div>
+    @if (p.skills.length) {
+      <div class="stack">
+        @for (group of p.skills; track group.label) {
+          <div class="stack-group">
+            <h3 class="eyebrow">{{ group.label }}</h3>
+            <ul>
+              @for (item of group.items; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
   }
 </section>
 

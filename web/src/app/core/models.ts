@@ -16,9 +16,16 @@ export interface Project {
   description: string[];
   year: number | null;
   role: string;
+  frontend: string | null;
+  backend: string | null;
   tags: string[];
   links: Link[];
   status: ProjectStatus;
+}
+
+export interface SkillGroup {
+  label: string;
+  items: string[];
 }
 
 export interface Profile {
@@ -27,6 +34,7 @@ export interface Profile {
   location: string;
   intro: string;
   about: string[];
+  skills: SkillGroup[];
   email: string;
   links: Link[];
 }

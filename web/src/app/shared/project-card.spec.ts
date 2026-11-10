@@ -10,6 +10,8 @@ const project: Project = {
   description: [],
   year: null,
   role: 'Developer',
+  frontend: 'Angular',
+  backend: 'Spring Boot',
   tags: ['Angular', 'Angular'],
   links: [],
   status: 'placeholder',

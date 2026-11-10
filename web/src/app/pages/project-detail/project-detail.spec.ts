@@ -12,6 +12,8 @@ const project: Project = {
   description: ['First paragraph.'],
   year: 2026,
   role: 'Developer',
+  frontend: 'Angular',
+  backend: 'Spring Boot',
   tags: [],
   links: [{ label: 'Live site', url: 'https://example.com' }],
   status: 'live',
@@ -38,6 +40,7 @@ describe('ProjectDetail', () => {
     await fixture.whenStable();
 
     expect(el.querySelector('h1')?.textContent?.trim()).toBe('Project One');
+    expect(el.querySelector('.facts')?.textContent).toContain('Spring Boot');
     expect(el.querySelector('a[target="_blank"]')?.getAttribute('rel')).toBe('noopener noreferrer');
   });
 

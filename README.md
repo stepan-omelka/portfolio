@@ -1,6 +1,7 @@
 # Portfolio
 
-A minimal black-and-white portfolio with a dark mode.
+A minimal black-and-white portfolio with a dark mode, for a full stack developer working with
+Angular on the frontend and Spring Boot or Next.js on the backend.
 
 | Folder | What                                                                      | Dev URL               |
 | ------ | ------------------------------------------------------------------------- | --------------------- |
@@ -49,15 +50,18 @@ const featuredProjects: Project[] = [
     summary: "One sentence for the card.",
     description: ["Paragraph one.", "Paragraph two."],
     year: 2026,
-    role: "Frontend developer",
-    tags: ["Angular", "TypeScript"],
+    role: "Full stack developer",
+    frontend: "Angular",           // or null if there is no UI
+    backend: "Spring Boot",        // or "Next.js", or null if frontend-only
+    tags: ["Angular", "Spring Boot", "PostgreSQL"],
     links: [{ label: "Live site", url: "https://example.com" }],
     status: "live",                // "live" | "in-progress" | "placeholder"
   },
 ];
 ```
 
-Profile text (name, intro, about, email, social links) is in the same file. The frontend
+Profile text (name, role, intro, about, the Frontend/Backend skill columns, email, social links)
+is in the same file. The frontend
 mirrors these types in [`web/src/app/core/models.ts`](web/src/app/core/models.ts), so keep the
 two in sync if you change the shape.
 
