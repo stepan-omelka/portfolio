@@ -91,6 +91,29 @@ export const profile: Profile = {
  */
 const featuredProjects: Project[] = [
   {
+    slug: "tapwave",
+    title: "Tapwave",
+    summary:
+      "A browser rhythm game in the circle-clicking genre, with a leaderboard the server verifies.",
+    description: [
+      "Hit circles as their approach ring closes, follow sliders and spin spinners across eight maps generated from each song's rhythm. The music is either synthesised live in the browser or openly licensed.",
+      "Frontend: Angular 22 (zoneless, signals) around a game engine in plain TypeScript: a game loop driven by the Web Audio clock, Canvas 2D rendering, procedurally synthesised tracks and an autoplay demo.",
+      "Backend: Spring Boot 4.1 with PostgreSQL and Flyway. The client never sends a score, only what happened to each object; the server recomputes the result and rejects plays that are too fast, outside the timing windows or too consistent to be human. Maps are generated on startup from each song's measured beat grid and onsets.",
+      "The scoring rules are implemented in both TypeScript and Java and kept in agreement by golden test cases that both test suites run (57 backend tests with Testcontainers, 17 frontend tests with Vitest). Built with Claude Code; the README lists where the AI went wrong and how each mistake was caught.",
+      "One Docker image serves the game, its audio and the API on Render's free tier, with the database on Neon. The first visit after a quiet spell takes a minute or two while the server starts.",
+    ],
+    year: 2026,
+    role: "Full stack developer",
+    frontend: "Angular",
+    backend: "Spring Boot",
+    tags: ["Angular", "Spring Boot", "PostgreSQL", "Canvas 2D", "Web Audio"],
+    links: [
+      { label: "Play it", url: "https://tapwave.onrender.com" },
+      { label: "Source code", url: "https://github.com/stepan-omelka/tapwave" },
+    ],
+    status: "live",
+  },
+  {
     slug: "cookie-clicker",
     title: "Cookie Clicker",
     summary:
