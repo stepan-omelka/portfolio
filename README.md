@@ -9,7 +9,8 @@ Angular on the frontend and Spring Boot or Next.js on the backend.
 | `api/` | **Next.js 16** content API: serves the profile and projects as JSON      | http://localhost:3300 |
 
 In development the Angular dev server proxies `/api/*` to the Next.js server (`web/proxy.conf.json`),
-so the browser only ever talks to `localhost:4300`.
+so the browser only ever talks to `localhost:4300`. In production both run as one Next.js app
+(see [Deploying](#deploying)).
 
 ## Getting started
 
@@ -29,7 +30,8 @@ Open http://localhost:4300.
 | `npm run dev`     | API + web dev servers together                |
 | `npm run dev:api` | Only the Next.js API (port 3300)              |
 | `npm run dev:web` | Only the Angular app (port 4300)              |
-| `npm run build`   | Production build of both                      |
+| `npm run build`   | Production build: Angular + Next.js as one app |
+| `npm start`       | Serve that build on http://localhost:3300     |
 | `npm test`        | Angular unit tests (Vitest)                   |
 | `npm run lint`    | ESLint for the API                            |
 
@@ -82,11 +84,20 @@ visitor uses the toggle; that choice is saved in `localStorage`. A small inline 
 
 ## Deploying
 
-`npm run build` produces `web/dist/web/browser` (static files) and a Next.js build in `api/`.
+The site runs as **one Next.js app on [Vercel](https://vercel.com)** (Hobby plan):
 
-- **Routing:** the frontend is a single-page app, so the static host must serve `index.html`
-  for unknown paths (e.g. `/projects/my-project`), otherwise deep links and refreshes 404.
-- **API location:** the frontend calls the API at `/api` (the `API_BASE_URL` token in
-  `web/src/app/core/api-base-url.ts`). Either serve both behind one domain with `/api` routed
-  to Next.js, or provide a full URL for `API_BASE_URL` in `web/src/app/app.config.ts` and
-  enable CORS on the API.
+- `npm run build` builds the Angular app, copies it into `api/public/`
+  ([`api/scripts/copy-web.mjs`](api/scripts/copy-web.mjs)) and then builds Next.js.
+- Next.js serves the API under `/api` and the Angular files from `public/`. Every other path
+  falls back to the Angular `index.html` (a rewrite in [`api/next.config.ts`](api/next.config.ts)),
+  so deep links such as `/projects/cookie-clicker` work after a refresh.
+- Frontend and API share one origin, so there is no CORS and `API_BASE_URL` stays `/api`.
+
+Build settings live in [`api/vercel.json`](api/vercel.json). To set it up:
+
+1. Vercel → *Add New → Project* → import this repository.
+2. Set **Root Directory** to `api` and deploy. Every push to `main` deploys again.
+
+The Hobby plan is free, needs no card and is for personal, non-commercial use. When a usage
+limit is exceeded, Vercel pauses that feature until 30 days have passed instead of billing
+([Vercel docs](https://vercel.com/docs/plans/hobby)).

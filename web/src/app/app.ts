@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -13,6 +14,7 @@ import { SiteHeader } from './layout/site-header';
 })
 export class App {
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('main');
+  private readonly scroller = inject(ViewportScroller);
 
   constructor() {
     const router = inject(Router);
@@ -34,6 +36,9 @@ export class App {
 
   protected skipToMain(event: Event): void {
     event.preventDefault();
-    this.main().nativeElement.focus();
+    this.main().nativeElement.focus({ preventScroll: true });
+    // Scroll with the sticky header's offset (set in SiteHeader); a plain focus() would
+    // put the start of the content underneath the header.
+    this.scroller.scrollToAnchor('main');
   }
 }

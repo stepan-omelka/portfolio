@@ -89,7 +89,67 @@ export const profile: Profile = {
  *     status: "live",
  *   },
  */
-const featuredProjects: Project[] = [];
+const featuredProjects: Project[] = [
+  {
+    slug: "cookie-clicker",
+    title: "Cookie Clicker",
+    summary:
+      "A small full stack game: click the cookie, buy upgrades, and the Spring Boot server keeps score in PostgreSQL.",
+    description: [
+      "Click the cookie and buy upgrades that give more cookies per click or per second. Progress is stored in PostgreSQL, and the server validates every purchase.",
+      "Frontend: Angular 22, zoneless and built on signals. Clicks show up immediately and are sent in batches once per second through a single request queue, so pending clicks always reach the server before a purchase. Clicks still unsent when the tab closes go out with sendBeacon.",
+      "Backend: Spring Boot 4 with Spring Data JPA and Flyway. Passive income is computed from the time since the last update, so nothing runs in the background. Retried click batches are counted only once, clicks are rate limited, and writes lock the game row so parallel requests can't lose updates. Errors are returned as Problem Details (RFC 9457).",
+      "Tested with JUnit 5, MockMvc, Testcontainers and Vitest. One Docker image serves both the game and the API, hosted on Render with the database on Neon.",
+    ],
+    year: 2026,
+    role: "Full stack developer",
+    frontend: "Angular",
+    backend: "Spring Boot",
+    tags: ["Angular", "Spring Boot", "Java", "PostgreSQL", "Docker"],
+    links: [
+      { label: "Play it", url: "https://cookie-clicker-he2s.onrender.com" },
+      { label: "Source code", url: "https://github.com/stepan-omelka/cookie-clicker" },
+    ],
+    status: "live",
+  },
+  {
+    slug: "modrusa",
+    title: "CM Modruša",
+    summary:
+      "Website for a cimbalom band from South Moravia, with a booking inquiry form that emails the band.",
+    description: [
+      "The official website of Cimbálová muzika Modruša, a young cimbalom band from Moravský Žižkov that plays folk music at public events, parties, corporate events and weddings. It introduces the band and its members, shows their Instagram, and lets visitors send booking inquiries.",
+      "Built with the Next.js App Router, React and Tailwind CSS. Pages are prerendered at build time; the only server-side code is a server action that validates the inquiry with Zod and emails it to the band through Resend.",
+      "Folders form layers that may only import from the layers below them, enforced by ESLint. Server actions are injected into components, so the contact form can be tested with a fake action. Tested with Jest and Testing Library, hosted on Vercel.",
+    ],
+    year: 2026,
+    role: "Developer",
+    frontend: "React (Next.js)",
+    backend: "Next.js server actions",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Resend"],
+    links: [{ label: "Live site", url: "https://modrusa.cz" }],
+    status: "live",
+  },
+  {
+    slug: "pocmarano",
+    title: "počmáráno",
+    summary:
+      "Bilingual portfolio website for an illustrator, with content managed in an embedded Sanity Studio.",
+    description: [
+      "Portfolio website of illustrator Tereza Cablíková (počmáráno): a gallery of illustrations, an about page, cooperation inquiries and contacts, in Czech and English.",
+      "The artist manages artworks and page texts in a Sanity Studio embedded in the site at /admin. The site reads the content with GROQ queries and TypeScript types generated from the Sanity schema.",
+      "Built with the Next.js App Router, React Server Components and Tailwind CSS. Pages under /cs and /en are prerendered and regenerated at most every 8 hours (ISR), so content edits show up without a redeploy. The contact form is a server action that emails submissions through Resend.",
+      "Tested with Vitest and Playwright end-to-end tests, hosted on Vercel.",
+    ],
+    year: 2026,
+    role: "Developer",
+    frontend: "React (Next.js)",
+    backend: "Next.js + Sanity CMS",
+    tags: ["Next.js", "React", "Sanity", "Tailwind CSS", "Playwright"],
+    links: [{ label: "Live site", url: "https://pocmarano.com" }],
+    status: "live",
+  },
+];
 
 /** Minimum number of cards on the page; empty ones are filled with placeholders. */
 const SLOT_COUNT = 6;

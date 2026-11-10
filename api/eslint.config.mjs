@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Angular build copied in by scripts/copy-web.mjs
+    "public/**",
   ]),
 ]);
 
