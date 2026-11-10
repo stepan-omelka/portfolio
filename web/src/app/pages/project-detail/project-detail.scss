@@ -1,0 +1,81 @@
+:host {
+  display: block;
+  max-width: 44rem;
+  padding-top: 3rem;
+}
+
+.back {
+  display: inline-block;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--fg);
+  }
+}
+
+header {
+  margin-top: 3rem;
+
+  h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    letter-spacing: -0.03em;
+  }
+}
+
+.lead {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1rem;
+  margin: 2.5rem 0;
+  padding-block: 1.25rem;
+  border-block: 1px solid var(--border);
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0.25rem 0 0;
+  }
+}
+
+.prose {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.0625rem;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.state {
+  margin-top: 3rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p {
+    margin-block: 0.75rem 1.5rem;
+  }
+}

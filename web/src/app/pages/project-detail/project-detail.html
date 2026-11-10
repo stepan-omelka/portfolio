@@ -1,0 +1,66 @@
+<a class="back" routerLink="/" fragment="work"><span aria-hidden="true">←</span> All projects</a>
+
+@if (project(); as p) {
+  <article>
+    <header>
+      <p class="eyebrow">{{ statusLabel() }}</p>
+      <h1>{{ p.title }}</h1>
+      <p class="lead">{{ p.summary }}</p>
+    </header>
+
+    <dl class="facts">
+      <div>
+        <dt>Year</dt>
+        <dd>{{ p.year ?? '—' }}</dd>
+      </div>
+      <div>
+        <dt>Role</dt>
+        <dd>{{ p.role }}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{{ statusLabel() }}</dd>
+      </div>
+    </dl>
+
+    <div class="prose">
+      @for (paragraph of p.description; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+    </div>
+
+    @if (p.tags.length) {
+      <ul class="tags" aria-label="Tags">
+        @for (tag of p.tags; track $index) {
+          <li>{{ tag }}</li>
+        }
+      </ul>
+    }
+
+    @if (p.links.length) {
+      <ul class="links">
+        @for (link of p.links; track link.url) {
+          <li>
+            <a class="button" [href]="link.url" target="_blank" rel="noopener noreferrer">
+              {{ link.label }} <span aria-hidden="true">↗</span>
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </article>
+} @else if (notFound()) {
+  <div class="state">
+    <h1>Project not found</h1>
+    <p class="muted">There's no project at this address.</p>
+  </div>
+} @else if (resource.error()) {
+  <div class="state" role="alert">
+    <h1>Couldn't load this project</h1>
+    <p class="muted">The API didn't respond. Is the Next.js server running?</p>
+    <button type="button" class="button" (click)="resource.reload()">Try again</button>
+  </div>
+} @else {
+  <p class="state muted" role="status">Loading project…</p>
+}

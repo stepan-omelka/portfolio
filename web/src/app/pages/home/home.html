@@ -1,0 +1,73 @@
+@if (content.hasError()) {
+  <div class="alert" role="alert">
+    <p>Couldn't load content from the API. Is the Next.js server running?</p>
+    <button type="button" class="button" (click)="content.reload()">Try again</button>
+  </div>
+}
+
+<section class="hero" aria-labelledby="hero-title">
+  @if (profile(); as p) {
+    <p class="eyebrow">{{ p.role }} · {{ p.location }}</p>
+    <h1 id="hero-title">{{ p.name }}</h1>
+    <p class="lead">{{ p.intro }}</p>
+  } @else {
+    <p class="eyebrow">Portfolio</p>
+    <h1 id="hero-title">Hello.</h1>
+  }
+  <div class="actions">
+    <a class="button primary" routerLink="/" fragment="work">View work</a>
+    <a class="button" routerLink="/" fragment="contact">Get in touch</a>
+  </div>
+</section>
+
+<section id="work" class="section" aria-labelledby="work-title">
+  <div class="section-head">
+    <h2 id="work-title">Selected work</h2>
+  </div>
+  @if (projects(); as list) {
+    <ul class="grid">
+      @for (project of list; track project.slug; let i = $index) {
+        <li><app-project-card [project]="project" [index]="i" /></li>
+      } @empty {
+        <li class="muted">No projects yet.</li>
+      }
+    </ul>
+  } @else if (content.isLoading()) {
+    <p class="muted" role="status">Loading projects…</p>
+  }
+</section>
+
+<section id="about" class="section" aria-labelledby="about-title">
+  <div class="section-head">
+    <h2 id="about-title">About</h2>
+  </div>
+  @if (profile(); as p) {
+    <div class="prose">
+      @for (paragraph of p.about; track $index) {
+        <p>{{ paragraph }}</p>
+      }
+    </div>
+  }
+</section>
+
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="section-head">
+    <h2 id="contact-title">Contact</h2>
+  </div>
+  @if (profile(); as p) {
+    <p class="muted">The best way to reach me is by email.</p>
+    <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
+    @if (p.links.length) {
+      <ul class="links">
+        @for (link of p.links; track link.url) {
+          <li>
+            <a [href]="link.url" target="_blank" rel="noopener noreferrer">
+              {{ link.label }} <span aria-hidden="true">↗</span>
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>
