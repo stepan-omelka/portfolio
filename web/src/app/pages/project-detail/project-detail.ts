@@ -39,9 +39,9 @@ export class ProjectDetail {
     effect(() => {
       const project = this.project();
       if (project) {
-        this.title.setTitle(`${project.title} · Portfolio`);
+        this.title.setTitle(`${project.title} · Štěpán Omelka`);
       } else if (this.notFound()) {
-        this.title.setTitle('Project not found · Portfolio');
+        this.title.setTitle('Project not found · Štěpán Omelka');
       }
     });
   }

@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    title: 'Portfolio',
+    title: 'Štěpán Omelka · Full Stack Developer',
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
   {
@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    title: 'Page not found · Portfolio',
+    title: 'Page not found · Štěpán Omelka',
     loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound),
   },
 ];
