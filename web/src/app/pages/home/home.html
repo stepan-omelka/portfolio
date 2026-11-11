@@ -77,12 +77,33 @@
     <div class="contact-grid">
       <div class="contact-details">
         <p class="muted">Write me an email, give me a call, or send a message through the form.</p>
-        <div class="reach">
-          <a class="email" [href]="'mailto:' + p.email">{{ p.email }}</a>
+        <ul class="reach">
+          <li>
+            <a class="email" [href]="'mailto:' + p.email">
+              <span class="reach-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 6 9-6" />
+                </svg>
+              </span>
+              <span class="reach-value">{{ p.email }}</span>
+            </a>
+          </li>
           @if (phoneHref(); as href) {
-            <a class="phone" [href]="href">{{ p.phone }}</a>
+            <li>
+              <a class="phone" [href]="href">
+                <span class="reach-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                </span>
+                <span class="reach-value">{{ p.phone }}</span>
+              </a>
+            </li>
           }
-        </div>
+        </ul>
         @if (p.links.length) {
           <ul class="links">
             @for (link of p.links; track link.url) {
