@@ -41,10 +41,9 @@ Open http://localhost:4300.
 
 All content lives in [`api/src/lib/portfolio.ts`](api/src/lib/portfolio.ts).
 
-The site ships with six placeholder slots (`status: "placeholder"`), rendered as dashed
-"Coming soon" cards. Add your projects to the `featuredProjects` array in that file: each one
-takes over a placeholder slot, and once all six are filled no more placeholders are shown
-(change `SLOT_COUNT` to show more or fewer slots).
+Add your projects to the `featuredProjects` array in that file. The page shows only real projects
+(`SLOT_COUNT = 0`). To fill the grid while there are few of them, raise `SLOT_COUNT`: missing
+cards are then shown as dashed "Coming soon" placeholders (`status: "placeholder"`).
 
 ```ts
 const featuredProjects: Project[] = [
