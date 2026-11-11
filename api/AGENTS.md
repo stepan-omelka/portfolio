@@ -1,3 +1,8 @@
+# ✨ Instructions for AI agents
+
+- Read the project's [README](./README.md) before changing anything here.
+- Refer to the [coding standards](../docs/coding-standards.md#-nextjs-api) for how the route handlers are written.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
