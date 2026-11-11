@@ -60,12 +60,29 @@ export const profile: Profile = {
   intro:
     "I build web applications end to end — Angular on the frontend, Spring Boot or Next.js on the backend.",
   about: [
-    "Placeholder — how you got into full stack development and the kind of products you like to build.",
-    "Placeholder — what you enjoy on each side of the stack: component architecture and UX in Angular, API design and data modelling in Spring Boot or Next.js.",
+    "I'm a web application developer in Brno. Since 2023 I've been building client web applications in TypeScript at FlowUp, a software house — Angular frontends, and currently the setup and frontend of a new SvelteKit project. On client projects I've grown from implementing tasks to spec to delivering project phases on my own: estimation, design and PR review.",
+    "The full stack side comes from my own projects, which I build and run end to end: Spring Boot APIs on PostgreSQL, packaged with Docker — like the rhythm game whose server recomputes every score — and two Next.js websites that real people use, for a cimbalom band and for an illustrator.",
+    "I've been coding since I was 14 and hold a Bachelor's degree from the Faculty of Informatics at Masaryk University (FI MUNI). I use AI-assisted development — Claude Code with MCP servers, skills and hooks — every day as a standard tool, with the focus on reviewing what it produces and owning the result.",
   ],
   skills: [
-    { label: "Frontend", items: ["Angular", "TypeScript", "RxJS & Signals", "HTML & SCSS"] },
-    { label: "Backend", items: ["Spring Boot", "Java", "Next.js", "Node.js", "REST APIs"] },
+    {
+      label: "Frontend",
+      items: ["Angular", "TypeScript", "SvelteKit", "Signals & RxJS", "HTML & SCSS"],
+    },
+    {
+      label: "Backend",
+      items: ["Spring Boot", "Java", "Next.js", "PostgreSQL", "Docker"],
+    },
+    {
+      label: "Workflow",
+      items: [
+        "Claude Code",
+        "MCP, skills & hooks",
+        "Estimation & design",
+        "PR review",
+        "Vitest & Playwright",
+      ],
+    },
   ],
   email: "stepomelka@gmail.com",
   phone: "+420 601 326 874",
