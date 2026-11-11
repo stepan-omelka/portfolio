@@ -36,13 +36,16 @@ import { ThemeService } from '../core/theme';
       padding: 0;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: transparent;
-      color: var(--fg);
+      background: var(--card);
+      color: var(--accent-text);
       cursor: pointer;
-      transition: border-color 0.15s ease;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
 
       &:hover {
-        border-color: var(--fg);
+        border-color: var(--accent);
+        background: var(--surface);
       }
     }
 

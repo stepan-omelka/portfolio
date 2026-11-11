@@ -10,7 +10,9 @@ import { ThemeToggle } from './theme-toggle';
   host: { role: 'banner' },
   template: `
     <div class="container bar">
-      <a class="brand" routerLink="/">{{ name() }}</a>
+      <a class="brand" routerLink="/"
+        ><span class="brand-name">{{ name() }}</span></a
+      >
       <nav aria-label="Primary">
         <ul>
           <li><a routerLink="/" fragment="work">Work</a></li>
@@ -27,8 +29,8 @@ import { ThemeToggle } from './theme-toggle';
       top: 0;
       z-index: 10;
       display: block;
-      background: color-mix(in srgb, var(--bg) 85%, transparent);
-      backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      backdrop-filter: blur(12px) saturate(1.4);
       border-bottom: 1px solid var(--border);
     }
 
@@ -40,13 +42,56 @@ import { ThemeToggle } from './theme-toggle';
     }
 
     .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      min-width: 0;
+      min-height: 2.5rem;
       margin-right: auto;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: -0.01em;
       text-decoration: none;
+
+      // Same mark as public/favicon.svg — change the two together.
+      &::before {
+        content: '';
+        flex: none;
+        width: 0.875rem;
+        height: 0.875rem;
+        border-radius: 0.25rem;
+        background: linear-gradient(135deg, var(--accent), var(--ice));
+        box-shadow: inset 0 0 0 1px var(--silver);
+        transform: rotate(45deg);
+      }
+    }
+
+    .brand-name {
+      min-width: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    // DejaVu Sans is too wide for the name and the nav to share a phone screen: show the mark only.
+    @media (max-width: 30rem) {
+      .brand {
+        min-width: 2.5rem;
+        justify-content: center;
+
+        &::before {
+          width: 1.125rem;
+          height: 1.125rem;
+        }
+      }
+
+      .brand-name {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
     }
 
     ul {
@@ -64,7 +109,7 @@ import { ThemeToggle } from './theme-toggle';
       transition: color 0.15s ease;
 
       &:hover {
-        color: var(--fg);
+        color: var(--accent-text);
       }
     }
   `,

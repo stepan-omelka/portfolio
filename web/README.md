@@ -26,10 +26,14 @@ per project, and reads all of its content from the [`api`](../api/README.md) ove
 
 ## 🎨 Styling
 
-- **Black and white.** Colours, fonts, spacing and radii are CSS custom properties in
-  [`styles.scss`](./src/styles.scss) (`--bg`, `--fg`, `--muted`, `--border`, `--surface`,
-  `--danger`, …), with a light and a dark set. Components use only these, so both themes stay
-  correct; `--danger` is the one colour, for errors.
+- **Arctic Frost** — the theme of that name from the
+  [Theme Factory skill](../.claude/skills/theme-factory/themes/arctic-frost.md): ice blue, steel
+  blue, silver and crisp white, set in DejaVu Sans (self-hosted through `@fontsource/dejavu-sans`,
+  registered in `angular.json`). Colours, fonts, spacing and radii are CSS custom properties in
+  [`styles.scss`](./src/styles.scss) (`--bg`, `--fg`, `--muted`, `--accent`, `--accent-text`,
+  `--ice`, `--danger`, …), with a light and a dark set. Components use only these, so both themes
+  stay correct. Use `--accent-text`, not `--accent`, for text: `--accent` is a fill colour and
+  lacks contrast as text in the dark theme.
 - **The theme follows the OS** until the visitor uses the toggle; the choice is saved in
   `localStorage`. [`ThemeService`](./src/app/core/theme.ts) applies it, and an inline script in
   [`index.html`](./src/index.html) applies the same logic before Angular boots, so the page never

@@ -15,6 +15,7 @@ import { PortfolioContent } from '../core/portfolio-content';
       display: block;
       margin-top: 6rem;
       border-top: 1px solid var(--border);
+      background: linear-gradient(to bottom, transparent, var(--surface));
     }
 
     .bar {

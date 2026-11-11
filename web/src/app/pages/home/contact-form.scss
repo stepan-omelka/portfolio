@@ -18,7 +18,7 @@ h3 {
 
 label {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 input,
@@ -27,18 +27,21 @@ textarea {
   padding: 0.7rem 0.875rem;
   border: 1px solid var(--border-strong);
   border-radius: calc(var(--radius) / 1.5);
-  background: var(--bg);
+  background: var(--card);
   color: var(--fg);
   font: inherit;
-  transition: border-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:hover {
-    border-color: var(--muted);
+    border-color: var(--accent);
   }
 
   &:focus-visible {
-    outline-offset: 1px;
-    border-color: var(--fg);
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--ice);
   }
 
   &[aria-invalid='true'] {
@@ -93,6 +96,7 @@ textarea {
   gap: 0.75rem;
   padding: 1.5rem;
   border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
   border-radius: var(--radius);
   background: var(--surface);
 

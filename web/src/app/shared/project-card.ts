@@ -9,7 +9,7 @@ import { Project, STATUS_LABELS } from '../core/models';
   template: `
     <article class="card">
       <div class="meta">
-        <span>{{ number() }}</span>
+        <span class="number">{{ number() }}</span>
         <span class="status">{{ statusLabel() }}</span>
       </div>
       <h3>
@@ -38,20 +38,38 @@ import { Project, STATUS_LABELS } from '../core/models';
       gap: 0.75rem;
       height: 100%;
       padding: 1.5rem;
+      overflow: hidden;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: var(--bg);
+      background: var(--card);
+      box-shadow: 0 1px 2px var(--shadow);
       transition:
-        border-color 0.15s ease,
-        transform 0.15s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--ice), var(--silver));
+        opacity: 0.35;
+        transition: opacity 0.2s ease;
+      }
 
       &:hover {
-        border-color: var(--fg);
-        transform: translateY(-2px);
+        border-color: var(--accent);
+        box-shadow: 0 14px 32px -16px var(--shadow);
+        transform: translateY(-3px);
+
+        &::before {
+          opacity: 1;
+        }
       }
 
       &:has(a:focus-visible) {
-        outline: 2px solid var(--fg);
+        outline: 2px solid var(--accent-text);
         outline-offset: 3px;
       }
     }
@@ -60,33 +78,43 @@ import { Project, STATUS_LABELS } from '../core/models';
       border-style: dashed;
       border-color: var(--border-strong);
       background: transparent;
+      box-shadow: none;
+
+      &::before {
+        display: none;
+      }
 
       &:hover {
-        border-color: var(--fg);
+        border-color: var(--accent);
       }
     }
 
     .meta {
       display: flex;
       justify-content: space-between;
-      font-family: var(--font-mono);
       font-size: 0.75rem;
       color: var(--muted);
     }
 
+    .number {
+      font-weight: 700;
+      color: var(--accent-text);
+    }
+
     .status {
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.1em;
     }
 
     h3 {
-      font-size: 1.25rem;
+      font-size: 1.1875rem;
     }
 
     // Make the whole card clickable while keeping a single link in the a11y tree.
     a {
       text-decoration: none;
       outline: none;
+      transition: color 0.15s ease;
 
       &::after {
         content: '';
@@ -94,6 +122,10 @@ import { Project, STATUS_LABELS } from '../core/models';
         inset: 0;
         border-radius: inherit;
       }
+    }
+
+    .card:hover a {
+      color: var(--accent-text);
     }
 
     .summary {
