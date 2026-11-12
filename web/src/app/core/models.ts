@@ -28,6 +28,16 @@ export interface SkillGroup {
   items: string[];
 }
 
+/** Kept unnamed: never the product's or the client's name. */
+export interface ClientProject {
+  title: string;
+  period: string;
+  role: string;
+  summary: string;
+  contribution: string;
+  tags: string[];
+}
+
 export interface Profile {
   name: string;
   role: string;
@@ -35,6 +45,7 @@ export interface Profile {
   intro: string;
   about: string[];
   skills: SkillGroup[];
+  clientWork: ClientProject[];
   email: string;
   phone: string | null;
   links: Link[];

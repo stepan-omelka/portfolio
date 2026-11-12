@@ -25,22 +25,59 @@
   </div>
 </section>
 
-<section id="work" class="section" aria-labelledby="work-title">
-  <div class="section-head">
-    <h2 id="work-title">Selected work</h2>
-  </div>
-  @if (projects(); as list) {
-    <ul class="grid">
-      @for (project of list; track project.slug; let i = $index) {
-        <li><app-project-card [project]="project" [index]="i" /></li>
-      } @empty {
-        <li class="muted">No projects yet.</li>
-      }
-    </ul>
-  } @else if (content.isLoading()) {
-    <p class="muted" role="status">Loading projects…</p>
+<div id="work" class="work">
+  @let work = profile()?.clientWork ?? [];
+  @if (work.length) {
+    <section class="section" aria-labelledby="professional-title">
+      <div class="section-head">
+        <h2 id="professional-title">Professional work</h2>
+        <p class="section-lead muted">
+          What I've worked on at FlowUp since 2023. The client products belong to the clients, so
+          they stay unnamed here, without links or source.
+        </p>
+      </div>
+      <ol class="client-work">
+        @for (item of work; track item.title) {
+          <li class="client-project">
+            <div class="client-meta">
+              <p class="eyebrow">{{ item.period }}</p>
+              <h3>{{ item.title }}</h3>
+              <p class="role">{{ item.role }}</p>
+            </div>
+            <div class="client-body">
+              <p class="client-summary">{{ item.summary }}</p>
+              <p class="muted">{{ item.contribution }}</p>
+              @if (item.tags.length) {
+                <ul class="tags" aria-label="Tags">
+                  @for (tag of item.tags; track $index) {
+                    <li>{{ tag }}</li>
+                  }
+                </ul>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+    </section>
   }
-</section>
+
+  <section id="projects" class="section" aria-labelledby="projects-title">
+    <div class="section-head">
+      <h2 id="projects-title">Personal projects</h2>
+    </div>
+    @if (projects(); as list) {
+      <ul class="grid">
+        @for (project of list; track project.slug; let i = $index) {
+          <li><app-project-card [project]="project" [index]="i" /></li>
+        } @empty {
+          <li class="muted">No projects yet.</li>
+        }
+      </ul>
+    } @else if (content.isLoading()) {
+      <p class="muted" role="status">Loading projects…</p>
+    }
+  </section>
+</div>
 
 <section id="about" class="section" aria-labelledby="about-title">
   <div class="section-head">

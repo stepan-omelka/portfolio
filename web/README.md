@@ -1,8 +1,9 @@
 # Web
 
 Everything the visitor sees — an [Angular 22](https://angular.dev) single-page app, zoneless and
-built on signals. It renders the home page (hero, selected work, about, contact) and a detail page
-per project, and reads all of its content from the [`api`](../api/README.md) over HTTP.
+built on signals. It renders the home page (hero, professional work, personal projects, about,
+contact) and a detail page per project, and reads all of its content from the
+[`api`](../api/README.md) over HTTP.
 
 ## ⚙️ How it's wired
 

@@ -37,6 +37,24 @@ export interface SkillGroup {
   items: string[];
 }
 
+/**
+ * A product I worked on at FlowUp. Client products and their code belong to the clients, so never
+ * name the product or the client here — not in `title`, nor in the text.
+ */
+export interface ClientProject {
+  /** What the product is, e.g. "Weather forecast editor". */
+  title: string;
+  /** When I worked on it, e.g. "2025" or "2025–2026". */
+  period: string;
+  /** My part of the stack, e.g. "Frontend" or "Full stack". */
+  role: string;
+  /** What the product is, in one or two sentences. */
+  summary: string;
+  /** What I built or did on it. */
+  contribution: string;
+  tags: string[];
+}
+
 export interface Profile {
   name: string;
   role: string;
@@ -47,6 +65,8 @@ export interface Profile {
   about: string[];
   /** Shown as columns under the About text. */
   skills: SkillGroup[];
+  /** Shown in the Professional work section in this order; an empty list hides the section. */
+  clientWork: ClientProject[];
   email: string;
   /** Shown under the email in the Contact section, e.g. "+420 123 456 789"; `null` hides it. */
   phone: string | null;
@@ -82,6 +102,76 @@ export const profile: Profile = {
         "PR review",
         "Vitest & Playwright",
       ],
+    },
+  ],
+  clientWork: [
+    {
+      title: "Weather forecast editor",
+      period: "2026",
+      role: "Frontend, some backend",
+      summary:
+        "A web app where meteorologists review and fill in the forecasts a weather company publishes.",
+      contribution:
+        "Set up the SvelteKit frontend from scratch — GraphQL codegen with Apollo Client, Tailwind CSS with DaisyUI, Storybook, translations and CI — and built most of the app on it: the forecast overview, an editable metrics grid, a detail page with a map preview, CSV export and end-to-end tests. On the backend, smaller changes in the GraphQL API, the data ingest service and the login server.",
+      tags: ["SvelteKit", "Svelte 5", "TypeScript", "GraphQL", "Tailwind CSS", "Node.js"],
+    },
+    {
+      title: "Online learning platform",
+      period: "2025–2026",
+      role: "Full stack",
+      summary:
+        "An online learning platform with courses, course packs, memberships and live webinars, paid for through Stripe.",
+      contribution:
+        "Built features end to end, from the GraphQL API and the PostgreSQL queries to the Angular screens: the course marketplace with filters and category carousels, the webinar calendar and registration, membership pages, the order and payment steps, personalized recommendations, transactional emails and the user administration where admins invite users and grant memberships and course access.",
+      tags: [
+        "Angular",
+        "TypeScript",
+        "Node.js",
+        "GraphQL",
+        "PostgreSQL",
+        "Stripe",
+        "Firebase Auth",
+      ],
+    },
+    {
+      title: "Environmental impact assessment for buildings",
+      period: "2025",
+      role: "Frontend",
+      summary:
+        "A platform for assessing the environmental impact of construction projects over their whole life cycle.",
+      contribution:
+        "Built Angular screens across the app: the life-cycle global warming potential graph, the building summary on the final analysis page, the project archive, an XML import form, improvements to how users move through a project's parts, and the home page's new design.",
+      tags: ["Angular", "TypeScript", "Nx"],
+    },
+    {
+      title: "Construction price catalogue",
+      period: "2024",
+      role: "Frontend",
+      summary:
+        "An online catalogue of construction work and material prices that cost estimators search and browse.",
+      contribution:
+        "Added a price archive dialog, highlighting of the searched text in the results, filters kept in the URL so a search can be shared or bookmarked, and unit tests.",
+      tags: ["Angular", "TypeScript", "Nx"],
+    },
+    {
+      title: "Factory location tracking portal",
+      period: "2023–2024",
+      role: "Frontend",
+      summary:
+        "A portal that shows where vehicles move around a factory, both live and back in time.",
+      contribution:
+        "Set up the Angular app's routing and sign-in flow, built the filters, and built the factory map's live view and a date slider for replaying past movement, with a trail behind each vehicle.",
+      tags: ["Angular", "TypeScript", "RxJS", "Ant Design"],
+    },
+    {
+      title: "Project template",
+      period: "2026",
+      role: "Backend, docs",
+      summary:
+        "FlowUp's own starting point for new full-stack web apps: an Nx monorepo with Angular, GraphQL and PostgreSQL.",
+      contribution:
+        "Hardened the shared logger against hostile input and closed gaps in how it redacts sensitive data, and wrote the policy for when a code comment or a doc earns its place.",
+      tags: ["Node.js", "TypeScript", "Nx"],
     },
   ],
   email: "stepomelka@gmail.com",
