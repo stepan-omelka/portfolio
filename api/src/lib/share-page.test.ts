@@ -1,8 +1,13 @@
-import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { type Profile, type Project, profile, projects } from "./portfolio";
-import { homeSharePage, projectSharePage, withShareTags } from "./share-page";
+import {
+  homeSharePage,
+  jpegSize,
+  projectSharePage,
+  readShareImage,
+  withShareTags,
+} from "./share-page";
 
 const shell = `<html><head>
 <title>Štěpán Omelka · Full Stack Developer</title>
@@ -50,8 +55,14 @@ describe("projectSharePage", () => {
   });
 });
 
+const image = {
+  url: "https://stepan-omelka-portfolio.vercel.app/og/tapwave.jpg?v=0123456789",
+  width: 1200,
+  height: 630,
+};
+
 describe("withShareTags", () => {
-  const html = withShareTags(shell, projectSharePage(project, owner));
+  const html = withShareTags(shell, projectSharePage(project, owner), image);
 
   it("replaces the title and the description", () => {
     expect(html).toContain("<title>Tapwave · Jana Nováková</title>");
@@ -64,16 +75,19 @@ describe("withShareTags", () => {
       '<meta property="og:url" content="https://stepan-omelka-portfolio.vercel.app/projects/tapwave">\n',
     );
     expect(html).toContain(
-      '<meta property="og:image" content="https://stepan-omelka-portfolio.vercel.app/og/tapwave.jpg">\n',
+      '<meta property="og:image" content="https://stepan-omelka-portfolio.vercel.app/og/tapwave.jpg?v=0123456789">\n',
     );
+    expect(html).toContain('<meta property="og:image:width" content="1200">\n');
+    expect(html).toContain('<meta property="og:image:height" content="630">\n');
     expect(html).toContain('<meta name="twitter:card" content="summary_large_image">\n</head>');
   });
 
   it("escapes text that would break the markup", () => {
-    const tricky = withShareTags(shell, {
-      ...projectSharePage(project, owner),
-      title: 'Tom & "Jerry" <3',
-    });
+    const tricky = withShareTags(
+      shell,
+      { ...projectSharePage(project, owner), title: 'Tom & "Jerry" <3' },
+      image,
+    );
 
     expect(tricky).toContain("<title>Tom &amp; &quot;Jerry&quot; &lt;3</title>");
     expect(tricky).toContain('content="Tom &amp; &quot;Jerry&quot; &lt;3"');
@@ -84,15 +98,31 @@ describe("share images", () => {
   const webPublic = path.join(import.meta.dirname, "../../../web/public");
 
   it.each(projects.filter(({ status }) => status !== "placeholder"))(
-    "has a share image for $slug in web/public/og",
+    "has a share image of at least 1200×630 for $slug in web/public/og",
     (realProject) => {
-      const { image } = projectSharePage(realProject, profile);
+      const { width, height } = readShareImage(webPublic, projectSharePage(realProject, profile).image);
 
-      expect(existsSync(path.join(webPublic, image))).toBe(true);
+      expect(width).toBeGreaterThanOrEqual(1200);
+      expect(height).toBeGreaterThanOrEqual(630);
     },
   );
 
-  it("has a share image for the home page in web/public/og", () => {
-    expect(existsSync(path.join(webPublic, homeSharePage(profile).image))).toBe(true);
+  it("has a 2400×1260 share image for the home page, sharp on high-density screens", () => {
+    expect(readShareImage(webPublic, homeSharePage(profile).image)).toMatchObject({
+      width: 2400,
+      height: 1260,
+    });
+  });
+
+  it("versions the image URL with a hash of the file", () => {
+    expect(readShareImage(webPublic, "/og/home.jpg").url).toMatch(
+      /^https:\/\/stepan-omelka-portfolio\.vercel\.app\/og\/home\.jpg\?v=[0-9a-f]{10}$/,
+    );
+  });
+});
+
+describe("jpegSize", () => {
+  it("rejects a file that isn't a JPEG", () => {
+    expect(() => jpegSize(Buffer.from("not an image"))).toThrow();
   });
 });

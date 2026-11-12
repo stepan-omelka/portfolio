@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // The repo root has its own package-lock.json; pin Turbopack to this app.
   turbopack: { root: path.join(__dirname) },
-  // The page routes read public/index.html. They are prerendered at build time, but a project
-  // slug that doesn't exist renders on request, so the function needs the file too.
+  // The page routes read public/index.html and the share images. They are prerendered at build
+  // time, but a project slug that doesn't exist renders on request, so the function needs them too.
   outputFileTracingIncludes: {
-    "/": ["./public/index.html"],
-    "/projects/*": ["./public/index.html"],
+    "/": ["./public/index.html", "./public/og/*"],
+    "/projects/*": ["./public/index.html", "./public/og/*"],
   },
   async rewrites() {
     return {

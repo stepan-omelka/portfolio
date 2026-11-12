@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { Profile, Project } from "./portfolio";
@@ -5,8 +6,6 @@ import type { Profile, Project } from "./portfolio";
 /** Link previews need absolute URLs, and previews of preview deployments should show production. */
 export const SITE_URL = "https://stepan-omelka-portfolio.vercel.app";
 
-const SHARE_IMAGE_WIDTH = 1200;
-const SHARE_IMAGE_HEIGHT = 630;
 const HOME_SHARE_IMAGE = "/og/home.jpg";
 
 /** What a link preview (LinkedIn, Messenger, WhatsApp…) shows for one page. */
@@ -15,9 +14,16 @@ export interface SharePage {
   title: string;
   description: string;
   path: string;
-  /** Path of a 1200×630 image in `web/public/`. */
+  /** Path of an image in `web/public/`, at least 1200×630. */
   image: string;
   imageAlt: string;
+}
+
+/** A share image as the preview tags describe it. */
+export interface ShareImage {
+  url: string;
+  width: number;
+  height: number;
 }
 
 export function homeSharePage(profile: Profile): SharePage {
@@ -46,18 +52,16 @@ export function projectSharePage(project: Project, profile: Profile): SharePage 
  * Link-preview crawlers don't run JavaScript, so they only see the Angular app's `index.html`.
  * This fills that page's title and description in and adds the Open Graph and Twitter card tags.
  */
-export function withShareTags(shell: string, page: SharePage): string {
-  const url = `${SITE_URL}${page.path}`;
-  const image = `${SITE_URL}${page.image}`;
+export function withShareTags(shell: string, page: SharePage, image: ShareImage): string {
   const tags = [
     ["property", "og:type", "website"],
     ["property", "og:site_name", page.siteName],
     ["property", "og:title", page.title],
     ["property", "og:description", page.description],
-    ["property", "og:url", url],
-    ["property", "og:image", image],
-    ["property", "og:image:width", String(SHARE_IMAGE_WIDTH)],
-    ["property", "og:image:height", String(SHARE_IMAGE_HEIGHT)],
+    ["property", "og:url", `${SITE_URL}${page.path}`],
+    ["property", "og:image", image.url],
+    ["property", "og:image:width", String(image.width)],
+    ["property", "og:image:height", String(image.height)],
     ["property", "og:image:alt", page.imageAlt],
     ["name", "twitter:card", "summary_large_image"],
   ].map(([key, name, content]) => `<meta ${key}="${name}" content="${escapeHtml(content)}">`);
@@ -71,15 +75,37 @@ export function withShareTags(shell: string, page: SharePage): string {
     .replace("</head>", `${tags.join("\n")}\n</head>`);
 }
 
-/** The Angular build's `index.html`, which `npm run build:site` copies into `public/`. */
-function readSiteShell(): string {
-  return readFileSync(path.join(process.cwd(), "public", "index.html"), "utf8");
+/**
+ * LinkedIn keeps the first copy it makes of an image URL for good, even after a re-scrape, so the
+ * URL carries a hash of the file: a changed image gets a new URL and LinkedIn copies it again.
+ */
+export function readShareImage(publicDir: string, imagePath: string): ShareImage {
+  const bytes = readFileSync(path.join(publicDir, imagePath));
+  const version = createHash("sha256").update(bytes).digest("hex").slice(0, 10);
+  return { url: `${SITE_URL}${imagePath}?v=${version}`, ...jpegSize(bytes) };
 }
 
+/** Width and height from the JPEG's start-of-frame segment. */
+export function jpegSize(bytes: Buffer): { width: number; height: number } {
+  let offset = 2;
+  while (offset + 9 <= bytes.length) {
+    const marker = bytes[offset + 1];
+    const isStartOfFrame = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
+    if (isStartOfFrame) {
+      return { height: bytes.readUInt16BE(offset + 5), width: bytes.readUInt16BE(offset + 7) };
+    }
+    offset += 2 + bytes.readUInt16BE(offset + 2);
+  }
+  throw new Error("Not a JPEG with a start-of-frame segment");
+}
+
+/** `npm run build:site` copies the Angular build, with `index.html` and `og/`, into `public/`. */
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+
 export function sharePageResponse(page: SharePage): Response {
-  return new Response(withShareTags(readSiteShell(), page), {
-    headers: { "Content-Type": "text/html; charset=utf-8" },
-  });
+  const shell = readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8");
+  const html = withShareTags(shell, page, readShareImage(PUBLIC_DIR, page.image));
+  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 }
 
 function escapeHtml(text: string): string {

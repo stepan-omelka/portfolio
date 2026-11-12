@@ -29,9 +29,12 @@ contact form as a JSON API under `/api`, and in production it also serves the An
   are route handlers ([`route.ts`](./src/app/route.ts),
   [`projects/[slug]/route.ts`](./src/app/projects/[slug]/route.ts)) that serve the same
   `index.html` with that page's title, description and Open Graph tags filled in
-  ([`share-page.ts`](./src/lib/share-page.ts)), prerendered for every project. The 1200×630
-  images are in [`web/public/og/`](../web/public/og/): `home.jpg` and one `<slug>.jpg` per project,
-  which a test requires.
+  ([`share-page.ts`](./src/lib/share-page.ts)), prerendered for every project. The images are in
+  [`web/public/og/`](../web/public/og/): `home.jpg` and one `<slug>.jpg` per project, JPEGs of at
+  least 1200×630, which a test requires. The home card is 2400×1260, because LinkedIn's
+  _Featured_ card on a Retina screen blurs anything smaller. Each image URL carries a hash of the
+  file (`?v=…`): LinkedIn never re-copies an image URL it has seen, so a changed image needs a
+  new URL.
 - **The contact form** ([`route.ts`](./src/app/api/contact/route.ts)) validates the message with
   zod ([`contact.ts`](./src/lib/contact.ts)), drops it silently when the honeypot is filled in,
   and emails it from Resend's shared `onboarding@resend.dev` to `profile.email`, with the visitor
