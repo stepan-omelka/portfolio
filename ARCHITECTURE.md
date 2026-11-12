@@ -31,6 +31,9 @@ graph LR
 - Next.js serves `/api/*` from route handlers and every file in `public/` as is. Any other path
   falls back to `public/index.html` (a rewrite in [`next.config.ts`](./api/next.config.ts)), so
   the Angular router handles deep links such as `/projects/tapwave` after a refresh.
+- `/` and `/projects/:slug` get that same `index.html` from prerendered route handlers, with the
+  page's title, description and link-preview image filled in — LinkedIn and chat apps don't run
+  the Angular app, so they only see what the HTML says ([details](./api/README.md#️-how-its-wired)).
 - **Content is static.** The profile and projects come from
   [`portfolio.ts`](./api/src/lib/portfolio.ts) and are prerendered at build time; changing them
   takes a commit and a deploy. Nothing is stored at runtime.

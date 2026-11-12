@@ -49,3 +49,11 @@ production deployment → ⋯ → **Redeploy**.
 2. Replace `RESEND_API_KEY` in Vercel (Production), then [redeploy](#redeploy-without-a-commit).
 3. Ask Štěpán to send himself one message through the live form, and check it in Resend → Emails.
 4. Delete the old key in Resend.
+
+### Refresh a link preview on LinkedIn
+
+LinkedIn reads a link's title and picture once and keeps them, even on the profile's Projects and
+Featured sections — a new image or text never reaches it on its own. After the deploy, open
+[Post Inspector](https://www.linkedin.com/post-inspector/) logged in to LinkedIn, enter the page's
+URL and press **Inspect**. LinkedIn reads the page again, and the profile shows the new preview.
+Messenger and WhatsApp cache previews too, for a few days.

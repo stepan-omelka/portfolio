@@ -7,8 +7,9 @@ contact form as a JSON API under `/api`, and in production it also serves the An
 
 ## ⚙️ How it's wired
 
-- **Route handlers only**, under [`src/app/api/`](./src/app/api/). The root `layout.tsx` exists
-  because Next.js requires one; the app renders no pages of its own.
+- **Route handlers only**, under [`src/app/api/`](./src/app/api/), plus two that serve the
+  Angular page. The root `layout.tsx` exists because Next.js requires one; the app renders no
+  React pages.
 
   | Endpoint                  | Returns                                      |                                        |
   | :------------------------ | :------------------------------------------- | :------------------------------------- |
@@ -23,6 +24,14 @@ contact form as a JSON API under `/api`, and in production it also serves the An
   `public/` ([`copy-web.mjs`](./scripts/copy-web.mjs)) and runs `next build`. `public/` is
   git-ignored and ignored by ESLint. A fallback rewrite in [`next.config.ts`](./next.config.ts)
   answers every path that is neither `/api…` nor a file with `index.html`.
+- **Link previews:** LinkedIn, Messenger and WhatsApp read a page's HTML without running
+  JavaScript, so the Angular app can't give them a title or a picture. `/` and `/projects/:slug`
+  are route handlers ([`route.ts`](./src/app/route.ts),
+  [`projects/[slug]/route.ts`](./src/app/projects/[slug]/route.ts)) that serve the same
+  `index.html` with that page's title, description and Open Graph tags filled in
+  ([`share-page.ts`](./src/lib/share-page.ts)), prerendered for every project. The 1200×630
+  images are in [`web/public/og/`](../web/public/og/): `home.jpg` and one `<slug>.jpg` per project,
+  which a test requires.
 - **The contact form** ([`route.ts`](./src/app/api/contact/route.ts)) validates the message with
   zod ([`contact.ts`](./src/lib/contact.ts)), drops it silently when the honeypot is filled in,
   and emails it from Resend's shared `onboarding@resend.dev` to `profile.email`, with the visitor
@@ -36,7 +45,8 @@ The profile and every project are in [`src/lib/portfolio.ts`](./src/lib/portfoli
 - `profile` — name, role, intro, the About paragraphs, the Frontend/Backend skill columns, email,
   phone (`null` hides it) and links.
 - `featuredProjects` — the real projects, in the order they appear. A project's `slug` is its URL
-  (`/projects/<slug>`). A project whose repository is private links only to its live site.
+  (`/projects/<slug>`). A project whose repository is private links only to its live site. A new
+  project also needs its link-preview image, `web/public/og/<slug>.jpg` (1200×630).
 - `SLOT_COUNT` — the minimum number of cards. At `0` the page shows only real projects; a higher
   value pads the grid with dashed _Coming soon_ placeholder cards.
 

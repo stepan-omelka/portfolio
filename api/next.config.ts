@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // The repo root has its own package-lock.json; pin Turbopack to this app.
   turbopack: { root: path.join(__dirname) },
+  // The page routes read public/index.html. They are prerendered at build time, but a project
+  // slug that doesn't exist renders on request, so the function needs the file too.
+  outputFileTracingIncludes: {
+    "/": ["./public/index.html"],
+    "/projects/*": ["./public/index.html"],
+  },
   async rewrites() {
     return {
       beforeFiles: [],
