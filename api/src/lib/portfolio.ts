@@ -200,6 +200,7 @@ const featuredProjects: Project[] = [
     summary:
       "A browser rhythm game in the circle-clicking genre, with a leaderboard the server verifies.",
     description: [
+      "It is a web “soft copy” of the game osu! - the future plan is to build my own maps for songs I composed myself - for now it has placeholder generated maps.",
       "Hit circles as their approach ring closes, follow sliders and spin spinners across eight maps generated from each song's rhythm. The music is either synthesised live in the browser or openly licensed.",
       "Frontend: Angular 22 (zoneless, signals) around a game engine in plain TypeScript: a game loop driven by the Web Audio clock, Canvas 2D rendering, procedurally synthesised tracks and an autoplay demo.",
       "Backend: Spring Boot 4.1 with PostgreSQL and Flyway. The client never sends a score, only what happened to each object; the server recomputes the result and rejects plays that are too fast, outside the timing windows or too consistent to be human. Maps are generated on startup from each song's measured beat grid and onsets.",
@@ -223,6 +224,7 @@ const featuredProjects: Project[] = [
     summary:
       "A small full stack game: click the cookie, buy upgrades, and the Spring Boot server keeps score in PostgreSQL.",
     description: [
+      "The app served to get a basic understanding of how Spring Boot works - How does data travel from the browser to the database and back? - REST API, Tomcat, backend layers, Hibernate, Docker, PostgreSQL.",
       "Click the cookie and buy upgrades that give more cookies per click or per second. Progress is stored in PostgreSQL, and the server validates every purchase.",
       "Frontend: Angular 22, zoneless and built on signals. Clicks show up immediately and are sent in batches once per second through a single request queue, so pending clicks always reach the server before a purchase. Clicks still unsent when the tab closes go out with sendBeacon.",
       "Backend: Spring Boot 4 with Spring Data JPA and Flyway. Passive income is computed from the time since the last update, so nothing runs in the background. Retried click batches are counted only once, clicks are rate limited, and writes lock the game row so parallel requests can't lose updates. Errors are returned as Problem Details (RFC 9457).",
@@ -280,7 +282,7 @@ const featuredProjects: Project[] = [
     slug: "agedate",
     title: "Agedate",
     summary:
-      "A dating-range calculator (half your age plus seven) that turns your result into an image for your story.",
+      "Meme app - a dating-range calculator (half your age plus seven) that turns your result into an image for your story.",
     description: [
       "Enter your age and Agedate shows your socially acceptable dating range by the half-your-age-plus-seven rule, then turns it into a 1080×1920 image to post on an Instagram or Facebook story.",
       "Frontend: Angular 22, zoneless and built on signals. The age field is validated with Signal Forms, and the result is a single computed signal. The story image is preloaded with httpResource as soon as a range is on screen, because browsers only open the share sheet straight from a click; where there is no share sheet, the image is downloaded instead.",
