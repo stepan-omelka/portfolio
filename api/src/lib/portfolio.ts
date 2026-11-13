@@ -102,12 +102,12 @@ export const profile: Profile = {
     {
       title: "Weather forecast editor",
       period: "2026",
-      role: "Frontend, some backend",
+      role: "Frontend",
       summary:
         "A web app where meteorologists review and fill in the forecasts a weather company publishes.",
       contribution:
-        "Set up the SvelteKit frontend from scratch — GraphQL codegen with Apollo Client, Tailwind CSS with DaisyUI, Storybook, translations and CI — and built most of the app on it: the forecast overview, an editable metrics grid, a detail page with a map preview, CSV export and end-to-end tests. On the backend, smaller changes in the GraphQL API, the data ingest service and the login server.",
-      tags: ["SvelteKit", "Svelte 5", "TypeScript", "GraphQL", "Tailwind CSS", "Node.js"],
+        "Set up the SvelteKit frontend from scratch — GraphQL codegen with Apollo Client, Tailwind CSS with DaisyUI, Storybook, translations and CI — and built most of the app on it: the forecast overview, an editable metrics grid, a detail page with a map preview, CSV export and end-to-end tests.",
+      tags: ["SvelteKit", "Svelte 5", "TypeScript", "GraphQL", "Tailwind CSS"],
     },
     {
       title: "Online learning platform",
@@ -154,18 +154,18 @@ export const profile: Profile = {
       summary:
         "A portal that shows where vehicles move around a factory, both live and back in time.",
       contribution:
-        "Set up the Angular app's routing and sign-in flow, built the filters, and built the factory map's live view and a date slider for replaying past movement, with a trail behind each vehicle.",
+        "Set up the Angular app's routing and sign-in flow, built the filters, and built the factory map's live view.",
       tags: ["Angular", "TypeScript", "RxJS", "Ant Design"],
     },
     {
       title: "Project template",
       period: "2026",
-      role: "Backend, docs",
+      role: "Docs",
       summary:
         "FlowUp's own starting point for new full-stack web apps: an Nx monorepo with Angular, GraphQL and PostgreSQL.",
       contribution:
-        "Hardened the shared logger against hostile input and closed gaps in how it redacts sensitive data, and wrote the policy for when a code comment or a doc earns its place.",
-      tags: ["Node.js", "TypeScript", "Nx"],
+        "Wrote the policy for when a code comment or a doc earns its place.",
+      tags: ["TypeScript", "Nx"],
     },
   ],
   email: "stepomelka@gmail.com",

@@ -55,7 +55,7 @@ describe('Home professional work section', () => {
   const forecastEditor: ClientProject = {
     title: 'Weather forecast editor',
     period: '2026',
-    role: 'Frontend, some backend',
+    role: 'Frontend',
     summary: 'A web app where meteorologists fill in forecasts.',
     contribution: 'Set up the SvelteKit frontend.',
     tags: ['SvelteKit', 'GraphQL'],
@@ -85,7 +85,7 @@ describe('Home professional work section', () => {
     const item = section?.querySelector('li.client-project');
     expect(item?.querySelector('h3')?.textContent).toBe('Weather forecast editor');
     expect(item?.textContent).toContain('2026');
-    expect(item?.textContent).toContain('Frontend, some backend');
+    expect(item?.textContent).toContain('Frontend');
     expect([...(item?.querySelectorAll('.tags li') ?? [])].map((li) => li.textContent)).toEqual([
       'SvelteKit',
       'GraphQL',
