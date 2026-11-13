@@ -1,45 +1,61 @@
 # API
 
-A [Next.js 16](https://nextjs.org) app with two jobs: it serves the portfolio's content and its
-contact form as a JSON API under `/api`, and in production it also serves the Angular build of
-[`web`](../web/README.md), so the whole site is one app on Vercel — see
-[_Architecture_](../ARCHITECTURE.md).
+A [NestJS 12](https://nestjs.com) app that serves the portfolio's content and its contact form as
+a JSON API under `/api`. Its build also produces the static site: the Angular build of
+[`web`](../web/README.md) plus a prerendered page per project, which Vercel serves next to the API
+— see [_Architecture_](../ARCHITECTURE.md).
 
 ## ⚙️ How it's wired
 
-- **Route handlers only**, under [`src/app/api/`](./src/app/api/), plus two that serve the
-  Angular page. The root `layout.tsx` exists because Next.js requires one; the app renders no
-  React pages.
+- **Modules** ([`app.module.ts`](./src/app.module.ts)): `PortfolioModule` serves the content,
+  `ContactModule` the contact form. Each has a controller for HTTP and a service for the work.
 
-  | Endpoint                  | Returns                                      |                                        |
-  | :------------------------ | :------------------------------------------- | :------------------------------------- |
-  | `GET /api/profile`        | `Profile`                                    | prerendered                            |
-  | `GET /api/projects`       | `Project[]`                                  | prerendered                            |
-  | `GET /api/projects/:slug` | `Project`, or `404`                          | prerendered for every slug             |
-  | `POST /api/contact`       | `{ ok: true }`, or `{ error: ContactError }` | dynamic — emails Štěpán through Resend |
+  | Endpoint                  | Returns                                      |                              |
+  | :------------------------ | :------------------------------------------- | :--------------------------- |
+  | `GET /api/profile`        | `Profile`                                    | cached by the CDN            |
+  | `GET /api/projects`       | `Project[]`                                  | cached by the CDN            |
+  | `GET /api/projects/:slug` | `Project`, or `404`                          | cached by the CDN            |
+  | `POST /api/contact`       | `{ ok: true }`, or `{ error: ContactError }` | emails Štěpán through Resend |
 
-- **The `GET` endpoints are static.** They are built from
-  [`portfolio.ts`](./src/lib/portfolio.ts) at build time, so a content change needs a deploy.
-- **Serving the Angular build:** `npm run build:site` builds `web`, copies the result into
-  `public/` ([`copy-web.mjs`](./scripts/copy-web.mjs)) and runs `next build`. `public/` is
-  git-ignored and ignored by ESLint. A fallback rewrite in [`next.config.ts`](./next.config.ts)
-  answers every path that is neither `/api…` nor a file with `index.html`.
+- **Every error is `{ error: string }`** with a status that says what went wrong. Code throws an
+  [`ApiError`](./src/api-error.ts); [`ApiErrorFilter`](./src/api-error.filter.ts) gives the same
+  shape to the errors Nest and Express raise themselves.
+- **Content is static.** The `GET` endpoints answer from [`portfolio.ts`](./src/lib/portfolio.ts),
+  so a content change needs a deploy, and Vercel's CDN keeps their responses until the next one.
+- **Three entry points share the modules:**
+
+  | File                                 | Started by                 | Does                                                   |
+  | :----------------------------------- | :------------------------- | :----------------------------------------------------- |
+  | [`main.ts`](./src/main.ts)           | `npm run dev`, `npm start` | listens on :3300; also serves `public/` if it exists   |
+  | [`vercel.ts`](./src/vercel.ts)       | the Vercel Function        | hands Vercel the Express app under Nest, with no port  |
+  | [`prerender.ts`](./src/prerender.ts) | `npm run build:site`       | writes the link-preview pages into `public/` and exits |
+
+- **On Vercel** ([`vercel.json`](./vercel.json)) the project is a static site plus one function,
+  not a framework preset: Vercel's NestJS preset serves no static files. `public/` is the output
+  directory, served by the CDN, and a file there always wins over a rewrite.
+  [`api/index.js`](./api/index.js) is the function: Vercel makes one of every file in an `api/`
+  folder, and a rewrite sends every `/api/*` request to it. Any other path that isn't a file gets
+  `index.html`, so the Angular router handles deep links after a refresh.
+- **The site build:** `npm run build:site` builds `web`, copies the result into `public/`
+  ([`copy-web.mjs`](./scripts/copy-web.mjs)), compiles this app into `dist/` and runs
+  `dist/prerender.js`. `public/` and `dist/` are git-ignored and ignored by ESLint.
 - **Link previews:** LinkedIn, Messenger and WhatsApp read a page's HTML without running
-  JavaScript, so the Angular app can't give them a title or a picture. `/` and `/projects/:slug`
-  are route handlers ([`route.ts`](./src/app/route.ts),
-  [`projects/[slug]/route.ts`](./src/app/projects/[slug]/route.ts)) that serve the same
-  `index.html` with that page's title, description and Open Graph tags filled in
-  ([`share-page.ts`](./src/lib/share-page.ts)), prerendered for every project. The images are in
+  JavaScript, so the Angular app can't give them a title or a picture. The prerender step writes
+  the Angular `index.html` once per page — `public/index.html` for `/` and
+  `public/projects/<slug>.html` for each project — with that page's title, description and Open
+  Graph tags filled in ([`share-page.ts`](./src/lib/share-page.ts)). `cleanUrls` in `vercel.json`
+  serves `projects/tapwave.html` at `/projects/tapwave`. The images are in
   [`web/public/og/`](../web/public/og/): `home.jpg` and one `<slug>.jpg` per project, JPEGs of at
   least 1200×630, which a test requires. The home card is 2400×1260, because LinkedIn's
   _Featured_ card on a Retina screen blurs anything smaller. Each image URL carries a hash of the
   file (`?v=…`): LinkedIn never re-copies an image URL it has seen, so a changed image needs a
   new URL.
-- **The contact form** ([`route.ts`](./src/app/api/contact/route.ts)) validates the message with
-  zod ([`contact.ts`](./src/lib/contact.ts)), drops it silently when the honeypot is filled in,
-  and emails it from Resend's shared `onboarding@resend.dev` to `profile.email`, with the visitor
-  as _Reply-To_. Nothing is stored. The shared sender only delivers to the Resend account's own
-  address, so `profile.email` must stay that address.
+- **The contact form** ([`contact.controller.ts`](./src/contact/contact.controller.ts)) accepts
+  only JSON, validates the message with zod ([`contact.ts`](./src/lib/contact.ts)), drops it
+  silently when the honeypot is filled in, and emails it from Resend's shared
+  `onboarding@resend.dev` to `profile.email`, with the visitor as _Reply-To_
+  ([`contact.service.ts`](./src/contact/contact.service.ts)). Nothing is stored. The shared sender
+  only delivers to the Resend account's own address, so `profile.email` must stay that address.
 
 ## 📝 Content
 
@@ -60,14 +76,19 @@ A change to the shape of `Profile` or `Project` must be copied into
 
 ```sh
 npm run dev           # this app on http://localhost:3300 (or `npm run dev` at the root for both)
-npm run build:site    # Angular + Next.js, as on Vercel; `npm start` serves it on :3300
+npm run build:site    # Angular + NestJS, as on Vercel; `npm start` serves it on :3300
 npm run lint          # ESLint
 ```
 
 - **`RESEND_API_KEY`** is the only environment variable. Without it the contact form answers
   `500` (`unexpected`) and the page offers the email address instead — the safe default for
   development. With a key in `api/.env.local` (git-ignored), every submission emails Štěpán.
-- `next build` on its own leaves `public/` empty or stale: the API works, the site does not.
+- **The app is ESM**, as NestJS 12 is: a relative import ends in `.js`, and there is no
+  `__dirname` — use `import.meta.dirname`.
+- `npm run build` on its own compiles only this app; `public/` stays empty or stale, so the API
+  works and the site does not.
+- `npm start` serves the site without Vercel, so it has no redirects: `/projects/tapwave/` and
+  `/index.html` answer directly there, and redirect on Vercel.
 - Build settings for Vercel are in [`vercel.json`](./vercel.json); the dashboard settings are in
   [_Hosting and operations_](../docs/operations.md).
 
@@ -79,8 +100,9 @@ See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the other commands.
 npm test   # every src/**/*.test.ts once, in Node
 ```
 
-- Route tests call the exported handler with a `Request` and check the `Response`.
-- The `resend` package is mocked in [`route.test.ts`](./src/app/api/contact/route.test.ts); a test
-  must never reach the real Resend API.
+- Endpoint tests start the Nest app without a port and send it HTTP requests with `supertest`.
+- The `resend` package is mocked in
+  [`contact.controller.test.ts`](./src/contact/contact.controller.test.ts); a test must never
+  reach the real Resend API.
 
 See the [testing strategy](../docs/testing-strategy.md) for what to test and how.

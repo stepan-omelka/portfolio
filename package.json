@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "private": true,
-  "description": "Personal portfolio — Angular frontend (web/) + Next.js content API (api/)",
+  "description": "Personal portfolio — Angular frontend (web/) + NestJS content API (api/)",
   "scripts": {
     "postinstall": "npm --prefix api install && npm --prefix web install",
     "dev": "concurrently --kill-others-on-fail -n api,web -c gray,blue \"npm:dev:api\" \"npm:dev:web\"",

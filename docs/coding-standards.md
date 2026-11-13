@@ -26,17 +26,24 @@ relying on an API you are unsure of.
 - Folders: `core/` (models, services, tokens), `layout/` (header, footer, theme toggle),
   `pages/` (one folder per route, lazy-loaded), `shared/` (components used by several pages).
 
-## ▲ Next.js (`api`)
+## 🪺 NestJS (`api`)
 
-Next.js 16 has breaking changes against most training data — read the guide in
-`api/node_modules/next/dist/docs/` before using an API (see [`api/AGENTS.md`](../api/AGENTS.md)).
+NestJS 12 is newer than most training data — check the
+[documentation index](https://docs.nestjs.com/llms.txt) before relying on an API you are unsure
+of.
 
-- **Route handlers only**, under `src/app/api/`. The root `layout.tsx` exists because Next.js
-  requires one; the app renders no pages of its own.
-- Content and logic live in `src/lib/`; a handler only parses the request, calls `lib` and
-  shapes the response. Import through the `@/` alias.
-- **Validate every request body at the boundary** with zod, and answer with an error code from a
-  string-literal union (`ContactError`) — never a zod message or a stack trace.
+- **One module per feature** (`portfolio/`, `contact/`), with a controller for HTTP and a service
+  for the work. A controller only reads the request, calls the service and shapes the response; a
+  service knows nothing about HTTP.
+- Content and framework-free logic live in `src/lib/` — plain functions and types with no Nest
+  import, so they are tested without starting the app.
+- **Dependencies arrive through the constructor**, typed by their class. A module lists what it
+  provides and `exports` what other modules may inject.
+- **Validate every request body at the boundary**: declare its zod schema on the parameter,
+  `@Body({ schema })`, and let the global `StandardSchemaValidationPipe` reject what doesn't match.
+- **Answer an error by throwing an `ApiError`** with a code from a string-literal union
+  (`ContactError`) — never a zod message or a stack trace.
+- The app is ESM: a relative import ends in `.js`.
 
 ## 🛡️ TypeScript
 
@@ -47,8 +54,9 @@ Next.js 16 has breaking changes against most training data — read the guide in
 - String-literal unions, not `enum`.
 - JSON fields use `null` for an absent value, because JSON has no `undefined`; in-memory code
   uses `undefined`.
-- Expected failures belong in the return type — `parseContactMessage` returns `undefined` for
-  invalid input. Reserve `throw` for the genuinely exceptional.
+- Expected failures belong in the return type — `findProject` returns `undefined` for an unknown
+  slug, and `ContactService.send` returns the error code. Reserve `throw` for the genuinely
+  exceptional, and for turning such a result into an HTTP error in a controller.
 - Derive, don't mutate: `const`, spread, `map`/`filter`/`find` over loops and `push`.
 - A good name removes the need for a comment. Booleans read as predicates (`isLoading`,
   `hasError`). American English everywhere — watch the Czech false friends: _actual_ means
