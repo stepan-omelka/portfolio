@@ -4,7 +4,7 @@ import path from "node:path";
 import { Test } from "@nestjs/testing";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { projects } from "../lib/portfolio.js";
-import { SharePagesModule } from "./share-pages.module.js";
+import { PrerenderModule } from "./prerender.module.js";
 import { SharePagesService } from "./share-pages.service.js";
 
 const shell = `<html><head>
@@ -17,7 +17,7 @@ describe("SharePagesService", () => {
   let publicDir: string;
 
   beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [SharePagesModule] }).compile();
+    const moduleRef = await Test.createTestingModule({ imports: [PrerenderModule] }).compile();
     sharePages = moduleRef.get(SharePagesService);
 
     publicDir = mkdtempSync(path.join(tmpdir(), "portfolio-public-"));
