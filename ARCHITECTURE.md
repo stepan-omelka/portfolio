@@ -2,8 +2,9 @@
 
 Two projects share this repository: an Angular single-page app, [`web`](./web/README.md), and a
 NestJS app, [`api`](./api/README.md). In development they run as two servers; in production they
-are **one Vercel deployment** — the Angular build as static files and the NestJS app as one
-function — so the frontend and the API share an origin and there is no CORS.
+are **one Vercel deployment** — static files for the Angular build and the content, and the NestJS
+app as one function for the contact form — so the frontend and the API share an origin and there
+is no CORS.
 
 This file is an index. Anything specific to a project lives in that project's `README.md`.
 
@@ -15,32 +16,37 @@ This file is an index. Anything specific to a project lives in that project's `R
 graph LR
   B["Browser<br/>(Angular SPA)"]
   subgraph V["Vercel — one deployment (api/)"]
-    P["CDN: public/<br/>Angular build,<br/>prerendered pages"]
-    R["Function: NestJS<br/>/api/*"]
+    P["CDN: public/<br/>Angular build,<br/>prerendered pages,<br/>content as JSON"]
+    R["Function: NestJS"]
   end
   RS[["Resend"]]
   M[("Štěpán's inbox")]
 
   B -->|"/, /projects/…"| P
-  B -->|"GET/POST /api/…"| R
-  R -->|"POST /api/contact"| RS --> M
+  B -->|"GET /api/profile,<br/>GET /api/projects…"| P
+  B -->|"POST /api/contact"| R
+  R --> RS --> M
 ```
 
 - `npm run build` builds the Angular app, copies it into `api/public/`
-  ([`copy-web.mjs`](./api/scripts/copy-web.mjs)), compiles the NestJS app and prerenders the
-  pages below. Vercel runs the same build, with the commands in
+  ([`copy-web.mjs`](./api/scripts/copy-web.mjs)), compiles the NestJS app and has it write the
+  pages and content files below. Vercel runs the same build, with the commands in
   [`api/vercel.json`](./api/vercel.json).
-- Vercel's CDN serves every file in `public/` as is, and a file always wins. `/api/*` goes to
-  the function that runs the NestJS app. Any other path falls back to `index.html`, so the
-  Angular router handles deep links after a refresh. All three are rules in `vercel.json`.
+- Vercel's CDN serves every file in `public/` as is, and a file always wins. The rest are
+  rewrites in `vercel.json`, tried in this order: the content endpoints get their files, any
+  other `/api/*` request goes to the function that runs the NestJS app, and any other path falls
+  back to `index.html`, so the Angular router handles deep links after a refresh.
 - `/` and `/projects/:slug` are files too: the build writes that same `index.html` once per page,
   with the page's title, description and link-preview image filled in — LinkedIn and chat apps
   don't run the Angular app, so they only see what the HTML says
   ([details](./api/README.md#️-how-its-wired)).
 - **Content is static.** The profile and projects come from
   [`portfolio.ts`](./api/src/lib/portfolio.ts); changing them takes a commit and a deploy. Nothing
-  is stored at runtime.
-- **The contact form is the only dynamic part.** It emails each message to Štěpán through
+  is stored at runtime. The build writes what `GET /api/profile`, `/api/projects` and
+  `/api/projects/:slug` answer into `public/api/` as `.json` files, so the page shows its content
+  without the function having to start.
+- **The contact form is the only dynamic part**, and with the `404`s for unknown API paths the
+  only thing the function serves. It emails each message to Štěpán through
   [Resend](https://resend.com) and keeps no copy.
 
 ### In development
