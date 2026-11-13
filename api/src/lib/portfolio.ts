@@ -95,12 +95,7 @@ export const profile: Profile = {
     },
     {
       label: "Workflow",
-      items: [
-        "Claude Code",
-        "MCP, skills & hooks",
-        "Working in sprints",
-        "Vitest & Playwright",
-      ],
+      items: ["Claude Code", "MCP, skills & hooks", "Working in sprints", "Vitest"],
     },
   ],
   clientWork: [
