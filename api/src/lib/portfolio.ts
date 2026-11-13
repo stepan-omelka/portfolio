@@ -1,5 +1,5 @@
 /**
- * Portfolio content — the single source of truth served by the API.
+ * Portfolio content - the single source of truth served by the API.
  *
  * To add a project, put it in `featuredProjects` below. Every real project
  * takes over one "Coming soon" placeholder slot until all slots are filled.
@@ -39,12 +39,12 @@ export interface SkillGroup {
 
 /**
  * A product I worked on at FlowUp. Client products and their code belong to the clients, so never
- * name the product or the client here — not in `title`, nor in the text.
+ * name the product or the client here - not in `title`, nor in the text.
  */
 export interface ClientProject {
   /** What the product is, e.g. "Weather forecast editor". */
   title: string;
-  /** When I worked on it, e.g. "2025" or "2025–2026". */
+  /** When I worked on it, e.g. "2025" or "2025 - 2026". */
   period: string;
   /** My part of the stack, e.g. "Frontend" or "Full stack". */
   role: string;
@@ -78,7 +78,7 @@ export const profile: Profile = {
   role: "Full Stack Developer",
   location: "Brno, Czech Republic",
   intro:
-    "I build web applications end to end — Angular on the frontend, Spring Boot or Node.js on the backend.",
+    "I build web applications end to end - Angular on the frontend, Spring Boot or Node.js on the backend.",
   about: [
     "I am a web application developer. Since 2023 I have been working part-time (contractor agreement) at FlowUp, a software house in Brno, building client applications in TypeScript - Angular frontend before agentic development, full stack with agents. I am used to working in sprints - estimation, implementation, standups, PR reviews, retrospectives.",
     "Agentic development is my everyday workflow. My goal is to be someone you can rely on, who solves problems and can design, defend and stand behind his own solutions.",
@@ -106,12 +106,12 @@ export const profile: Profile = {
       summary:
         "A web app where meteorologists review and fill in the forecasts a weather company publishes.",
       contribution:
-        "Set up the SvelteKit frontend from scratch — GraphQL codegen with Apollo Client, Tailwind CSS with DaisyUI, Storybook, translations and CI — and built most of the app on it: the forecast overview, an editable metrics grid, a detail page with a map preview, CSV export and end-to-end tests.",
+        "Set up the SvelteKit frontend from scratch - GraphQL codegen with Apollo Client, Tailwind CSS with DaisyUI, Storybook, translations and CI - and built most of the app on it: the forecast overview, an editable metrics grid, a detail page with a map preview, CSV export and end-to-end tests.",
       tags: ["SvelteKit", "Svelte 5", "TypeScript", "GraphQL", "Tailwind CSS"],
     },
     {
       title: "Online learning platform",
-      period: "2025–2026",
+      period: "2025 - 2026",
       role: "Full stack",
       summary:
         "An online learning platform with courses, course packs, memberships and live webinars, paid for through Stripe.",
@@ -149,7 +149,7 @@ export const profile: Profile = {
     },
     {
       title: "Factory location tracking portal",
-      period: "2023–2024",
+      period: "2023 - 2024",
       role: "Frontend",
       summary:
         "A portal that shows where vehicles move around a factory, both live and back in time.",
@@ -321,11 +321,11 @@ function placeholderProject(index: number): Project {
   return {
     slug: `project-${n}`,
     title: `Project ${ORDINALS[index] ?? n}`,
-    summary: `Placeholder — a full stack app with an Angular frontend and a ${backend} backend.`,
+    summary: `Placeholder - a full stack app with an Angular frontend and a ${backend} backend.`,
     description: [
-      "Placeholder — what problem does this project solve, and for whom?",
-      "Frontend: how the Angular app is structured — state, routing, the most interesting UI work.",
-      `Backend: what the ${backend} API does — endpoints, data model, authentication, integrations.`,
+      "Placeholder - what problem does this project solve, and for whom?",
+      "Frontend: how the Angular app is structured - state, routing, the most interesting UI work.",
+      `Backend: what the ${backend} API does - endpoints, data model, authentication, integrations.`,
       "What you learned, and what you would do differently next time.",
     ],
     year: null,
