@@ -1,13 +1,13 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { type Profile, type Project, profile, projects } from "./portfolio";
+import { type Profile, type Project, profile, projects } from "./portfolio.js";
 import {
   homeSharePage,
   jpegSize,
   projectSharePage,
   readShareImage,
   withShareTags,
-} from "./share-page";
+} from "./share-page.js";
 
 const shell = `<html><head>
 <title>Štěpán Omelka · Full Stack Developer</title>

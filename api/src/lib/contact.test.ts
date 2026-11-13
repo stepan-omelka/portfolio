@@ -1,15 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { formatContactEmail, parseContactMessage } from "./contact";
+import { contactMessageSchema, formatContactEmail } from "./contact.js";
 
 const valid = { name: "Jana Nováková", email: "jana@example.com", message: "Hello!" };
 
-describe("parseContactMessage", () => {
+describe("contactMessageSchema", () => {
   it("accepts a valid message and trims it", () => {
-    expect(parseContactMessage({ name: "  Jana ", email: " jana@example.com ", message: " Hi " })).toEqual({
-      name: "Jana",
-      email: "jana@example.com",
-      message: "Hi",
-    });
+    expect(
+      contactMessageSchema.parse({ name: "  Jana ", email: " jana@example.com ", message: " Hi " }),
+    ).toEqual({ name: "Jana", email: "jana@example.com", message: "Hi" });
   });
 
   it.each([
@@ -20,11 +18,11 @@ describe("parseContactMessage", () => {
     ["a message over 5000 characters", { ...valid, message: "a".repeat(5001) }],
     ["a non-object", "hello"],
   ])("rejects %s", (_, input) => {
-    expect(parseContactMessage(input)).toBeUndefined();
+    expect(contactMessageSchema.safeParse(input).success).toBe(false);
   });
 
-  it("keeps the honeypot value so the route can spot bots", () => {
-    expect(parseContactMessage({ ...valid, website: "https://spam.example" })?.website).toBe(
+  it("keeps the honeypot value so the controller can spot bots", () => {
+    expect(contactMessageSchema.parse({ ...valid, website: "https://spam.example" }).website).toBe(
       "https://spam.example",
     );
   });

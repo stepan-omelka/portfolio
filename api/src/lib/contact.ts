@@ -8,7 +8,8 @@ export type ContactError = "invalid" | "send-failed" | "unexpected";
 
 const CONTACT_LIMITS = { name: 200, email: 320, message: 5000 } as const;
 
-const contactMessageSchema = z.object({
+/** The body of POST /api/contact. */
+export const contactMessageSchema = z.object({
   name: z.string().trim().min(1).max(CONTACT_LIMITS.name).regex(SINGLE_LINE),
   email: z.string().trim().max(CONTACT_LIMITS.email).pipe(z.email()),
   message: z.string().trim().min(1).max(CONTACT_LIMITS.message),
@@ -17,12 +18,6 @@ const contactMessageSchema = z.object({
 });
 
 export type ContactMessage = z.infer<typeof contactMessageSchema>;
-
-/** Returns the validated message, or `undefined` if the input isn't a valid message. */
-export function parseContactMessage(input: unknown): ContactMessage | undefined {
-  const parsed = contactMessageSchema.safeParse(input);
-  return parsed.success ? parsed.data : undefined;
-}
 
 export function formatContactEmail({ name, email, message }: ContactMessage): {
   subject: string;
