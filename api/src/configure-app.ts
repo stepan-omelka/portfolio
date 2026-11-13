@@ -5,6 +5,7 @@ const MAX_BODY_BYTES = 20_000;
 
 export function configureApp(app: NestExpressApplication): void {
   app.setGlobalPrefix("api");
-  app.useBodyParser("json", { limit: MAX_BODY_BYTES });
+  // The only body parser: JSON, uncompressed, so the limit is what is read off the network.
+  app.useBodyParser("json", { limit: MAX_BODY_BYTES, inflate: false });
   app.disable("x-powered-by");
 }

@@ -8,7 +8,11 @@ export async function createApp(
   rootModule: Type<unknown>,
   options: NestApplicationOptions = {},
 ): Promise<NestExpressApplication> {
-  const app = await NestFactory.create<NestExpressApplication>(rootModule, options);
+  const app = await NestFactory.create<NestExpressApplication>(rootModule, {
+    ...options,
+    // Nest's default parsers would read a form post of up to 100 kB before the guard rejects it.
+    bodyParser: false,
+  });
   configureApp(app);
   return app;
 }
