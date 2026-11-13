@@ -3,7 +3,7 @@
 A [NestJS 12](https://nestjs.com) app that serves the portfolio's content and its contact form as
 a JSON API under `/api`. Its build also produces the static site: the Angular build of
 [`web`](../web/README.md), a prerendered page per project and the content endpoints' responses as
-files. Vercel serves those next to the API — see [_Architecture_](../ARCHITECTURE.md).
+files. Vercel serves those next to the API - see [_Architecture_](../ARCHITECTURE.md).
 
 ## ⚙️ How it's wired
 
@@ -15,7 +15,7 @@ files. Vercel serves those next to the API — see [_Architecture_](../ARCHITECT
   | `GET /api/profile`        | `Profile`                                    | a file written by the build           |
   | `GET /api/projects`       | `Project[]`                                  | a file written by the build           |
   | `GET /api/projects/:slug` | `Project`, or `404`                          | a file; the function for the `404`    |
-  | `POST /api/contact`       | `{ ok: true }`, or `{ error: ContactError }` | the function — emails Štěpán (Resend) |
+  | `POST /api/contact`       | `{ ok: true }`, or `{ error: ContactError }` | the function - emails Štěpán (Resend) |
 
 - **Every error is `{ error: string }`** with a status that says what went wrong. Code throws an
   [`ApiError`](./src/api-error.ts); [`ApiErrorFilter`](./src/api-error.filter.ts) gives the same
@@ -40,7 +40,7 @@ files. Vercel serves those next to the API — see [_Architecture_](../ARCHITECT
   not a framework preset: Vercel's NestJS preset serves no static files. `public/` is the output
   directory, served by the CDN, and a file there always wins over a rewrite.
   [`api/index.js`](./api/index.js) is the function: Vercel makes one of every file in an `api/`
-  folder, and a rewrite sends every `/api/*` request that has no file to it — the contact form,
+  folder, and a rewrite sends every `/api/*` request that has no file to it - the contact form,
   an unknown slug or endpoint. Any other path that isn't a file gets `index.html`, so the Angular
   router handles deep links after a refresh.
 - **The site build:** `npm run build:site` builds `web`, copies the result into `public/`
@@ -48,8 +48,8 @@ files. Vercel serves those next to the API — see [_Architecture_](../ARCHITECT
   `dist/prerender.js`. `public/` and `dist/` are git-ignored and ignored by ESLint.
 - **Link previews:** LinkedIn, Messenger and WhatsApp read a page's HTML without running
   JavaScript, so the Angular app can't give them a title or a picture. The prerender step writes
-  the Angular `index.html` once per page — `public/index.html` for `/` and
-  `public/projects/<slug>.html` for each project — with that page's title, description and Open
+  the Angular `index.html` once per page - `public/index.html` for `/` and
+  `public/projects/<slug>.html` for each project - with that page's title, description and Open
   Graph tags filled in ([`share-page.ts`](./src/lib/share-page.ts)). `cleanUrls` in `vercel.json`
   serves `projects/tapwave.html` at `/projects/tapwave`. The images are in
   [`web/public/og/`](../web/public/og/): `home.jpg` and one `<slug>.jpg` per project, JPEGs of at
@@ -68,13 +68,13 @@ files. Vercel serves those next to the API — see [_Architecture_](../ARCHITECT
 
 The profile and every project are in [`src/lib/portfolio.ts`](./src/lib/portfolio.ts):
 
-- `profile` — name, role, intro, the About paragraphs, the Frontend/Backend skill columns, email,
+- `profile` - name, role, intro, the About paragraphs, the Frontend/Backend skill columns, email,
   phone (`null` hides it) and links.
-- `featuredProjects` — the real projects, in the order they appear. A project's `slug` is its URL
+- `featuredProjects` - the real projects, in the order they appear. A project's `slug` is its URL
   (`/projects/<slug>`). A project whose repository is private links only to its live site. A new
   project also needs its link-preview image, `web/public/og/<slug>.jpg` (1200×630), and its slug
   in the `/api/projects/:slug(…)` rewrite in [`vercel.json`](./vercel.json).
-- `SLOT_COUNT` — the minimum number of cards. At `0` the page shows only real projects; a higher
+- `SLOT_COUNT` - the minimum number of cards. At `0` the page shows only real projects; a higher
   value pads the grid with dashed _Coming soon_ placeholder cards.
 
 A change to the shape of `Profile` or `Project` must be copied into
@@ -89,10 +89,10 @@ npm run lint          # ESLint
 ```
 
 - **`RESEND_API_KEY`** is the only environment variable. Without it the contact form answers
-  `500` (`unexpected`) and the page offers the email address instead — the safe default for
+  `500` (`unexpected`) and the page offers the email address instead - the safe default for
   development. With a key in `api/.env.local` (git-ignored), every submission emails Štěpán.
 - **The app is ESM**, as NestJS 12 is: a relative import ends in `.js`, and there is no
-  `__dirname` — use `import.meta.dirname`.
+  `__dirname` - use `import.meta.dirname`.
 - `npm run build` on its own compiles only this app; `public/` stays empty or stale, so the API
   works and the site does not.
 - `npm start` serves the site without Vercel, so it has no redirects and no rewrites:

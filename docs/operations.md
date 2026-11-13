@@ -1,7 +1,7 @@
 # ☁️ Hosting and operations
 
 The services the site runs on, which account holds each one, and the settings that live in their
-dashboards rather than in this repo. Read it before changing anything outside the code — and
+dashboards rather than in this repo. Read it before changing anything outside the code - and
 change nothing here without Štěpán's go-ahead.
 
 ## 🗺️ Services
@@ -23,7 +23,7 @@ non-commercial use, which this site is.
 
 | Setting           | Set in                                                                                        | Notes                                                                                                                                                  |
 | :---------------- | :-------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`  | Vercel → Settings → Environment Variables (Production, _Sensitive_); locally `api/.env.local` | A key with _Sending access_. **In Resend it is named `pocmarano-contact-form`** — despite the name it is this site's key; deleting it breaks the form. |
+| `RESEND_API_KEY`  | Vercel → Settings → Environment Variables (Production, _Sensitive_); locally `api/.env.local` | A key with _Sending access_. **In Resend it is named `pocmarano-contact-form`** - despite the name it is this site's key; deleting it breaks the form. |
 | Root Directory    | Vercel → Settings → Build and Deployment: `api`                                               | install and build commands are in [`api/vercel.json`](../api/vercel.json)                                                                              |
 | Framework Preset  | `framework` in [`api/vercel.json`](../api/vercel.json): `null`, which is _Other_              | overrides the preset in the Vercel project settings, so the one the dashboard shows does not apply                                                     |
 | Node.js version   | `engines.node` in [`api/package.json`](../api/package.json): `24.x`                           | overrides the Node version in the Vercel project settings                                                                                              |
@@ -54,7 +54,7 @@ production deployment → ⋯ → **Redeploy**.
 ### Refresh a link preview on LinkedIn
 
 LinkedIn reads a link's title and picture once and keeps them, even on the profile's Projects and
-Featured sections — a new image or text never reaches it on its own. After the deploy, open
+Featured sections - a new image or text never reaches it on its own. After the deploy, open
 [Post Inspector](https://www.linkedin.com/post-inspector/) logged in to LinkedIn, enter the page's
 URL and press **Inspect**. LinkedIn reads the page again, and the profile shows the new preview.
 Messenger and WhatsApp cache previews too, for a few days.

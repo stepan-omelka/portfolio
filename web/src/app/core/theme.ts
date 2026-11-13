@@ -52,7 +52,7 @@ export class ThemeService {
     try {
       this.window?.localStorage.setItem(THEME_STORAGE_KEY, theme);
     } catch {
-      // Storage can be unavailable (private mode, disabled cookies) — the theme still applies.
+      // Storage can be unavailable (private mode, disabled cookies) - the theme still applies.
     }
   }
 

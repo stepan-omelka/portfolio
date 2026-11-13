@@ -1,6 +1,6 @@
 # Web
 
-Everything the visitor sees — an [Angular 22](https://angular.dev) single-page app, zoneless and
+Everything the visitor sees - an [Angular 22](https://angular.dev) single-page app, zoneless and
 built on signals. It renders the home page (hero, professional work, personal projects, about,
 contact) and a detail page per project, and reads all of its content from the
 [`api`](../api/README.md) over HTTP.
@@ -13,7 +13,7 @@ contact) and a detail page per project, and reads all of its content from the
   own project by slug. While the content loads or fails, the home page shows a loading state or a
   _Try again_ button.
 - **Every API URL starts from the [`API_BASE_URL`](./src/app/core/api-base-url.ts) token**,
-  `/api`. It is the same origin in development (proxied) and in production (one app) — see
+  `/api`. It is the same origin in development (proxied) and in production (one app) - see
   [_Architecture_](../ARCHITECTURE.md).
 - **[`models.ts`](./src/app/core/models.ts) is a hand-made copy of the API's types.** Change it
   together with `api/src/lib/`; nothing checks that they agree.
@@ -27,7 +27,7 @@ contact) and a detail page per project, and reads all of its content from the
 
 ## 🎨 Styling
 
-- **Arctic Frost** — the theme of that name from the
+- **Arctic Frost** - the theme of that name from the
   [Theme Factory skill](../.claude/skills/theme-factory/themes/arctic-frost.md): ice blue, steel
   blue, silver and crisp white, set in DejaVu Sans (self-hosted through `@fontsource/dejavu-sans`,
   registered in `angular.json`). Colours, fonts, spacing and radii are CSS custom properties in
@@ -38,7 +38,7 @@ contact) and a detail page per project, and reads all of its content from the
 - **The theme follows the OS** until the visitor uses the toggle; the choice is saved in
   `localStorage`. [`ThemeService`](./src/app/core/theme.ts) applies it, and an inline script in
   [`index.html`](./src/index.html) applies the same logic before Angular boots, so the page never
-  flashes the wrong theme — change the two together.
+  flashes the wrong theme - change the two together.
 - Component styles live in the component's `.scss` file, or inline for a small component.
 
 ## 💻 Development
