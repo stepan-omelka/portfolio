@@ -7,7 +7,7 @@ import { PortfolioContent } from '../core/portfolio-content';
   template: `
     <div class="container bar">
       <p>© {{ year }} {{ name() }}</p>
-      <p>Built with Angular &amp; Next.js</p>
+      <p>Built with Angular &amp; NestJS</p>
     </div>
   `,
   styles: `
