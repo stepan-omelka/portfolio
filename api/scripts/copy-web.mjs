@@ -1,5 +1,5 @@
-// Copies the Angular build into public/, so one Next.js app serves both the
-// frontend and the API from the same origin. Run by `npm run build:site`.
+// Copies the Angular build into public/, which Vercel serves as static files next to the API,
+// so both share an origin. Run by `npm run build:site`.
 import { cpSync, existsSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 

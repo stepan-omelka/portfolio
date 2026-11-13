@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import type { Profile, Project } from "./portfolio";
+import type { Profile, Project } from "./portfolio.js";
 
 /** Link previews need absolute URLs, and previews of preview deployments should show production. */
 export const SITE_URL = "https://stepan-omelka-portfolio.vercel.app";
@@ -97,15 +97,6 @@ export function jpegSize(bytes: Buffer): { width: number; height: number } {
     offset += 2 + bytes.readUInt16BE(offset + 2);
   }
   throw new Error("Not a JPEG with a start-of-frame segment");
-}
-
-/** `npm run build:site` copies the Angular build, with `index.html` and `og/`, into `public/`. */
-const PUBLIC_DIR = path.join(process.cwd(), "public");
-
-export function sharePageResponse(page: SharePage): Response {
-  const shell = readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8");
-  const html = withShareTags(shell, page, readShareImage(PUBLIC_DIR, page.image));
-  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 }
 
 function escapeHtml(text: string): string {
