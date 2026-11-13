@@ -19,8 +19,6 @@ export class ApiErrorFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const response = host.switchToHttp().getResponse<Response>();
-    // `@Header()` is already applied when a handler throws, and Vercel's CDN would keep a 404.
-    response.removeHeader("Cache-Control");
 
     if (exception instanceof ApiError) {
       response.status(exception.getStatus()).json(exception.getResponse());

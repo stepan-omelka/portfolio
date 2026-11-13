@@ -7,6 +7,12 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/api/profile", "destination": "/api/profile.json" },
+    { "source": "/api/projects", "destination": "/api/projects.json" },
+    {
+      "source": "/api/projects/:slug(tapwave|cookie-clicker|modrusa|pocmarano|agedate)",
+      "destination": "/api/projects/:slug.json"
+    },
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/(.*)", "destination": "/" }
   ]
