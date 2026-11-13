@@ -25,7 +25,7 @@ export interface Project {
   role: string;
   /** Frontend technology, e.g. "Angular". `null` if the project has no UI. */
   frontend: string | null;
-  /** Backend technology, e.g. "Spring Boot" or "Next.js". `null` if frontend-only. */
+  /** Backend technology, e.g. "Spring Boot" or "NestJS". `null` if frontend-only. */
   backend: string | null;
   tags: string[];
   links: Link[];
@@ -78,7 +78,7 @@ export const profile: Profile = {
   role: "Full Stack Developer",
   location: "Brno, Czech Republic",
   intro:
-    "I build web applications end to end — Angular on the frontend, Spring Boot or Next.js on the backend.",
+    "I build web applications end to end — Angular on the frontend, Spring Boot or Node.js on the backend.",
   about: [
     "I'm a web application developer in Brno. Since 2023 I've been building client web applications in TypeScript at FlowUp, a software house — mostly Angular frontends, on recent projects parts of the backend too (Node.js, GraphQL, PostgreSQL), and most recently the setup and frontend of a new SvelteKit project. On client projects I've grown from implementing tasks to spec to delivering project phases on my own: estimation, design and PR review.",
     "The rest of my full stack experience comes from my own projects, which I build and run end to end: Spring Boot APIs on PostgreSQL, packaged with Docker — like the rhythm game whose server recomputes every score — and two Next.js websites that real people use, for a cimbalom band and for an illustrator.",
@@ -91,7 +91,7 @@ export const profile: Profile = {
     },
     {
       label: "Backend",
-      items: ["Spring Boot", "Java", "Next.js", "PostgreSQL", "Docker"],
+      items: ["Spring Boot", "Java", "Node.js & NestJS", "PostgreSQL", "Docker"],
     },
     {
       label: "Workflow",
@@ -296,8 +296,8 @@ const featuredProjects: Project[] = [
     year: 2026,
     role: "Full stack developer",
     frontend: "Angular",
-    backend: "Next.js",
-    tags: ["Angular", "Next.js", "TypeScript", "Signal Forms", "Vercel"],
+    backend: "NestJS",
+    tags: ["Angular", "NestJS", "TypeScript", "Signal Forms", "Vercel"],
     links: [
       { label: "Try it", url: "https://agedate.vercel.app" },
       { label: "Source code", url: "https://github.com/stepan-omelka/agedateinterval" },
@@ -316,7 +316,7 @@ const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six"];
 /** Placeholder slots alternate between the two backends you work with. */
 const PLACEHOLDER_STACKS = [
   { backend: "Spring Boot", tags: ["Angular", "Spring Boot", "Java"] },
-  { backend: "Next.js", tags: ["Angular", "Next.js", "TypeScript"] },
+  { backend: "NestJS", tags: ["Angular", "NestJS", "TypeScript"] },
 ];
 
 function placeholderProject(index: number): Project {
