@@ -24,6 +24,7 @@
 - **The API contract exists twice.** [`api/src/lib/portfolio.ts`](./api/src/lib/portfolio.ts) and [`api/src/lib/contact.ts`](./api/src/lib/contact.ts) define it; [`web/src/app/core/models.ts`](./web/src/app/core/models.ts) copies it by hand. Nothing checks that they agree, so a mismatch only shows up at runtime — change both in the same commit.
 - **`profile.email` must stay the Resend account's own address** (`stepomelka@gmail.com`). The contact form sends from Resend's shared `onboarding@resend.dev`, which only delivers to that address; a different `profile.email` makes every message fail with `send-failed`.
 - **`api/public/` is generated** — `npm run build` copies the Angular build into it. It is git-ignored; edit [`web/`](./web/README.md) instead.
+- **`api/api/index.js` must stay where it is.** Vercel's Root Directory is `api` (a dashboard setting), and Vercel only turns the files in that root's own `api/` folder into functions — hence the doubled path. Moving or renaming it takes `/api/*` offline, while the build still passes.
 - **Don't run Prettier over a whole folder.** Only `web/` has a Prettier config, and not every file in it matches yet, so a folder-wide run rewrites files you never touched. Format only the files you change.
 
 ## Changing the code

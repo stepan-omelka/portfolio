@@ -1,8 +1,9 @@
 # 🏛️ Architecture
 
 Two projects share this repository: an Angular single-page app, [`web`](./web/README.md), and a
-Next.js app, [`api`](./api/README.md). In development they run as two servers; in production they
-are **one Next.js app on Vercel**, so the frontend and the API share an origin and there is no CORS.
+NestJS app, [`api`](./api/README.md). In development they run as two servers; in production they
+are **one Vercel deployment** — the Angular build as static files and the NestJS app as one
+function — so the frontend and the API share an origin and there is no CORS.
 
 This file is an index. Anything specific to a project lives in that project's `README.md`.
 
@@ -13,9 +14,9 @@ This file is an index. Anything specific to a project lives in that project's `R
 ```mermaid
 graph LR
   B["Browser<br/>(Angular SPA)"]
-  subgraph V["Vercel — one Next.js app (api/)"]
-    P["public/<br/>Angular build"]
-    R["Route handlers<br/>/api/*"]
+  subgraph V["Vercel — one deployment (api/)"]
+    P["CDN: public/<br/>Angular build,<br/>prerendered pages"]
+    R["Function: NestJS<br/>/api/*"]
   end
   RS[["Resend"]]
   M[("Štěpán's inbox")]
@@ -26,17 +27,19 @@ graph LR
 ```
 
 - `npm run build` builds the Angular app, copies it into `api/public/`
-  ([`copy-web.mjs`](./api/scripts/copy-web.mjs)) and runs `next build`. Vercel runs the same
-  build, with the commands in [`api/vercel.json`](./api/vercel.json).
-- Next.js serves `/api/*` from route handlers and every file in `public/` as is. Any other path
-  falls back to `public/index.html` (a rewrite in [`next.config.ts`](./api/next.config.ts)), so
-  the Angular router handles deep links such as `/projects/tapwave` after a refresh.
-- `/` and `/projects/:slug` get that same `index.html` from prerendered route handlers, with the
-  page's title, description and link-preview image filled in — LinkedIn and chat apps don't run
-  the Angular app, so they only see what the HTML says ([details](./api/README.md#️-how-its-wired)).
+  ([`copy-web.mjs`](./api/scripts/copy-web.mjs)), compiles the NestJS app and prerenders the
+  pages below. Vercel runs the same build, with the commands in
+  [`api/vercel.json`](./api/vercel.json).
+- Vercel's CDN serves every file in `public/` as is, and a file always wins. `/api/*` goes to
+  the function that runs the NestJS app. Any other path falls back to `index.html`, so the
+  Angular router handles deep links after a refresh. All three are rules in `vercel.json`.
+- `/` and `/projects/:slug` are files too: the build writes that same `index.html` once per page,
+  with the page's title, description and link-preview image filled in — LinkedIn and chat apps
+  don't run the Angular app, so they only see what the HTML says
+  ([details](./api/README.md#️-how-its-wired)).
 - **Content is static.** The profile and projects come from
-  [`portfolio.ts`](./api/src/lib/portfolio.ts) and are prerendered at build time; changing them
-  takes a commit and a deploy. Nothing is stored at runtime.
+  [`portfolio.ts`](./api/src/lib/portfolio.ts); changing them takes a commit and a deploy. Nothing
+  is stored at runtime.
 - **The contact form is the only dynamic part.** It emails each message to Štěpán through
   [Resend](https://resend.com) and keeps no copy.
 
@@ -45,10 +48,10 @@ graph LR
 ```mermaid
 graph LR
   B["Browser"] -->|"localhost:4300"| NG["ng serve<br/>(web)"]
-  NG -->|"proxies /api/*"| NX["next dev :3300<br/>(api)"]
+  NG -->|"proxies /api/*"| NX["nest start :3300<br/>(api)"]
 ```
 
-[`web/proxy.conf.json`](./web/proxy.conf.json) forwards `/api` to the Next.js dev server, so the
+[`web/proxy.conf.json`](./web/proxy.conf.json) forwards `/api` to the NestJS dev server, so the
 browser talks to one origin, as in production, and the frontend's `API_BASE_URL` stays `/api` in
 both.
 
@@ -57,7 +60,7 @@ both.
 | Project                  | Runs on            | Built with                                         | Tests                       |
 | :----------------------- | :----------------- | :------------------------------------------------- | :-------------------------- |
 | [`web`](./web/README.md) | the browser        | Angular 22 (zoneless, signals, Signal Forms), SCSS | Vitest in jsdom (`ng test`) |
-| [`api`](./api/README.md) | Node.js, on Vercel | Next.js 16 route handlers, zod, Resend             | Vitest in Node              |
+| [`api`](./api/README.md) | Node.js, on Vercel | NestJS 12 (Express), zod, Resend                   | Vitest in Node              |
 
 The API contract — `Profile`, `Project`, the contact request and its error codes — is defined in
 `api/src/lib/` and copied by hand into
@@ -74,7 +77,7 @@ The API contract — `Profile`, `Project`, the contact request and its error cod
 
 ### 🗄️ Backend
 
-- [Next.js](https://nextjs.org) — route handlers only
+- [NestJS](https://nestjs.com) — modules, controllers and services, on Express
 - [zod](https://zod.dev) — validates the contact form input
 - [Resend](https://resend.com) — sends the contact form emails
 

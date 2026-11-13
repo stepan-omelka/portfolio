@@ -1,6 +1,6 @@
 {
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  // Note: the app reads its content from the Next.js API — run `npm run dev:api` from the repo root too.
+  // Note: the app reads its content from the NestJS API — run `npm run dev:api` from the repo root too.
   "version": "0.2.0",
   "configurations": [
     {
