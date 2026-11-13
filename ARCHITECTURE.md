@@ -2,8 +2,8 @@
 
 Two projects share this repository: an Angular single-page app, [`web`](./web/README.md), and a
 NestJS app, [`api`](./api/README.md). In development they run as two servers; in production they
-are **one Vercel deployment** — static files for the Angular build and the content, and the NestJS
-app as one function for the contact form — so the frontend and the API share an origin and there
+are **one Vercel deployment** - static files for the Angular build and the content, and the NestJS
+app as one function for the contact form - so the frontend and the API share an origin and there
 is no CORS.
 
 This file is an index. Anything specific to a project lives in that project's `README.md`.
@@ -15,7 +15,7 @@ This file is an index. Anything specific to a project lives in that project's `R
 ```mermaid
 graph LR
   B["Browser<br/>(Angular SPA)"]
-  subgraph V["Vercel — one deployment (api/)"]
+  subgraph V["Vercel - one deployment (api/)"]
     P["CDN: public/<br/>Angular build,<br/>prerendered pages,<br/>content as JSON"]
     R["Function: NestJS"]
   end
@@ -37,7 +37,7 @@ graph LR
   other `/api/*` request goes to the function that runs the NestJS app, and any other path falls
   back to `index.html`, so the Angular router handles deep links after a refresh.
 - `/` and `/projects/:slug` are files too: the build writes that same `index.html` once per page,
-  with the page's title, description and link-preview image filled in — LinkedIn and chat apps
+  with the page's title, description and link-preview image filled in - LinkedIn and chat apps
   don't run the Angular app, so they only see what the HTML says
   ([details](./api/README.md#️-how-its-wired)).
 - **Content is static.** The profile and projects come from
@@ -68,7 +68,7 @@ both.
 | [`web`](./web/README.md) | the browser        | Angular 22 (zoneless, signals, Signal Forms), SCSS | Vitest in jsdom (`ng test`) |
 | [`api`](./api/README.md) | Node.js, on Vercel | NestJS 12 (Express), zod, Resend                   | Vitest in Node              |
 
-The API contract — `Profile`, `Project`, the contact request and its error codes — is defined in
+The API contract - `Profile`, `Project`, the contact request and its error codes - is defined in
 `api/src/lib/` and copied by hand into
 [`web/src/app/core/models.ts`](./web/src/app/core/models.ts).
 
@@ -76,29 +76,29 @@ The API contract — `Profile`, `Project`, the contact request and its error cod
 
 ### 🖥️ Frontend
 
-- [Angular](https://angular.dev) — standalone components, signals, `httpResource`,
+- [Angular](https://angular.dev) - standalone components, signals, `httpResource`,
   [Signal Forms](https://angular.dev/guide/forms/signals/overview)
-- [RxJS](https://rxjs.dev) — only where an Angular API is observable-based
-- [Sass](https://sass-lang.com) — CSS custom properties for the light and dark theme
+- [RxJS](https://rxjs.dev) - only where an Angular API is observable-based
+- [Sass](https://sass-lang.com) - CSS custom properties for the light and dark theme
 
 ### 🗄️ Backend
 
-- [NestJS](https://nestjs.com) — modules, controllers and services, on Express
-- [zod](https://zod.dev) — validates the contact form input
-- [Resend](https://resend.com) — sends the contact form emails
+- [NestJS](https://nestjs.com) - modules, controllers and services, on Express
+- [zod](https://zod.dev) - validates the contact form input
+- [Resend](https://resend.com) - sends the contact form emails
 
 ### 🛠️ Development tools
 
 - [TypeScript](https://www.typescriptlang.org), [npm](https://www.npmjs.com)
 - [ESLint](https://eslint.org) (`api`), [Prettier](https://prettier.io) (`web`)
 - [Vitest](https://vitest.dev)
-- [concurrently](https://github.com/open-cli-tools/concurrently) — runs both dev servers
+- [concurrently](https://github.com/open-cli-tools/concurrently) - runs both dev servers
 
 ### ☁️ Services
 
-- [Vercel](https://vercel.com) (Hobby plan) — hosting and deploys
-- [Resend](https://resend.com) (Free plan) — email
-- [GitHub](https://github.com/stepan-omelka/portfolio) — the public repository
+- [Vercel](https://vercel.com) (Hobby plan) - hosting and deploys
+- [Resend](https://resend.com) (Free plan) - email
+- [GitHub](https://github.com/stepan-omelka/portfolio) - the public repository
 
 Which account holds each one, and the settings that live in their dashboards, are in
 [_Hosting and operations_](./docs/operations.md).

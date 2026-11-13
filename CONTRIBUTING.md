@@ -4,7 +4,7 @@
 
 - [Node.js](https://nodejs.org) in Angular 22's range: `^22.22.3`, `^24.15.0` or `>=26` (see
   `engines` in [`package.json`](./package.json)). Vercel builds with Node 24.
-- npm — each of the root, [`api`](./api/README.md) and [`web`](./web/README.md) has its own
+- npm - each of the root, [`api`](./api/README.md) and [`web`](./web/README.md) has its own
   `package-lock.json`.
 
 ## ♻️ Setup
@@ -14,7 +14,7 @@ npm install   # the root, then api/ and web/ (a postinstall script)
 ```
 
 No environment variables are needed to run the site. The contact form needs `RESEND_API_KEY` to
-send email — see the [API README](./api/README.md#-development).
+send email - see the [API README](./api/README.md#-development).
 
 ## 💻 Development
 
@@ -50,7 +50,7 @@ defaults, so the portfolio can run next to other projects on 4200 and 3000.
 npm test && npm run lint && npm run build
 ```
 
-Nothing runs these for you — there is no CI — so run them before every push. For a visible
+Nothing runs these for you - there is no CI - so run them before every push. For a visible
 change, also check the page in a browser, in both themes and at a narrow width.
 
 ### Code style
@@ -58,7 +58,7 @@ change, also check the page in a browser, in both themes and at a narrow width.
 Refer to the [_Coding standards_](./docs/coding-standards.md).
 
 `web/` is formatted with Prettier ([`web/.prettierrc`](./web/.prettierrc): 100 columns, single
-quotes). Format the files you change — `cd web && npx prettier --write <files>` — not whole
+quotes). Format the files you change - `cd web && npx prettier --write <files>` - not whole
 folders, since not every file matches yet. `api/` has no formatter; follow the surrounding code
 (double quotes, lines up to 100 columns).
 
@@ -79,7 +79,7 @@ Commit messages follow the [conventional commits](https://www.conventionalcommit
 in Štěpán's other repositories. No hook enforces it here, and the oldest commits predate it, so
 don't copy their style.
 
-Types follow _semantic versioning_ rules — `feat`, `fix` and `perf` are reserved for changes
+Types follow _semantic versioning_ rules - `feat`, `fix` and `perf` are reserved for changes
 visitors notice. Write in the imperative and summarize the _what_ and _why_; the _how_ is in the
 diff.
 
@@ -95,7 +95,7 @@ diff.
 
 ### Branches and deploys
 
-- `main` is production — every push to it deploys
+- `main` is production - every push to it deploys
   [stepan-omelka-portfolio.vercel.app](https://stepan-omelka-portfolio.vercel.app). Other branches
   get Vercel preview deployments.
 - Keep `main`'s history linear: rebase rather than merge, or squash a branch into one commit.

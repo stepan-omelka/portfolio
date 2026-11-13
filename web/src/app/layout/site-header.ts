@@ -52,7 +52,7 @@ import { ThemeToggle } from './theme-toggle';
       letter-spacing: -0.01em;
       text-decoration: none;
 
-      // Same mark as public/favicon.svg — change the two together.
+      // Same mark as public/favicon.svg - change the two together.
       &::before {
         content: '';
         flex: none;

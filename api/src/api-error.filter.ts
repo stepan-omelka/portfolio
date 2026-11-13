@@ -10,8 +10,8 @@ import type { Response } from "express";
 import { ApiError } from "./api-error.js";
 
 /**
- * Gives the errors Nest and Express raise themselves — an unknown route, a body that is too large
- * or isn't JSON, a crash — the `{ error }` body that every `ApiError` has.
+ * Gives the errors Nest and Express raise themselves - an unknown route, a body that is too large
+ * or isn't JSON, a crash - the `{ error }` body that every `ApiError` has.
  */
 @Catch()
 export class ApiErrorFilter implements ExceptionFilter {
