@@ -91,15 +91,14 @@ export const profile: Profile = {
     },
     {
       label: "Backend",
-      items: ["Spring Boot", "Java", "Node.js & NestJS", "PostgreSQL", "Docker"],
+      items: ["Spring Boot", "Java", "Node.js", "PostgreSQL", "Docker"],
     },
     {
       label: "Workflow",
       items: [
         "Claude Code",
         "MCP, skills & hooks",
-        "Estimation & design",
-        "PR review",
+        "Working in sprints",
         "Vitest & Playwright",
       ],
     },
